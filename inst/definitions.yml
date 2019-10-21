@@ -1,0 +1,58 @@
+# vi: fdm=marker
+
+databases:
+
+  hmdb.metabolites:
+    entry.content.type: xml
+    name: HMDB Metabolites
+    parsing.expr:
+      accession: /metabolite/accession
+      average.mass: //average_molecular_weight
+      cas.id: //cas_registry_number
+      chebi.id: //chebi_id
+      chemspider.id: //chemspider_id
+      kegg.compound.id: //kegg_id
+      ncbi.pubchem.comp.id: //pubchem_compound_id
+      comp.iupac.name.syst: //iupac_name
+      comp.iupac.name.trad: //traditional_iupac
+      formula: /metabolite/chemical_formula
+      inchi: //inchi
+      inchikey: //inchikey
+      monoisotopic.mass: //monisotopic_molecular_weight
+      name: /metabolite/name
+      smiles: //smiles
+      super.class: //super_class
+    scheduler.n: 3
+    urls:
+      base.url: http://www.hmdb.ca/
+    dwnld.ext: zip
+
+fields:
+
+  chemspider.id:
+    description: ChemSpider ID
+    case.insensitive: true
+    forbids.duplicates: true
+    type: id
+    card: many
+
+  hmdb.metabolites.id:
+    description: HMDB Metabolites ID
+    case.insensitive: true
+    forbids.duplicates: true
+    type: id
+    card: many
+
+  kegg.compound.id:
+    description: KEGG Compound ID
+    case.insensitive: true
+    forbids.duplicates: true
+    type: id
+    card: many
+
+  ncbi.pubchem.comp.id:
+    description: PubChem Compound ID
+    case.insensitive: true
+    forbids.duplicates: true
+    type: id
+    card: many
