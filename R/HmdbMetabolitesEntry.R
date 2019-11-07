@@ -25,7 +25,6 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @include BiodbXmlEntry.R
 #' @export HmdbMetabolitesEntry
 #' @exportClass HmdbMetabolitesEntry
 HmdbMetabolitesEntry <- methods::setRefClass("HmdbMetabolitesEntry",

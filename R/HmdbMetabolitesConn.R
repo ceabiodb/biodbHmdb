@@ -28,9 +28,8 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @include BiodbRemotedbConn.R
-#' @include BiodbCompounddbConn.R
-#' @include BiodbDownloadable.R
+#' @export HmdbMetabolitesConn
+#' @exportClass HmdbMetabolitesConn
 HmdbMetabolitesConn <- methods::setRefClass("HmdbMetabolitesConn",
     contains=c("BiodbRemotedbConn", "BiodbCompounddbConn", 'BiodbDownloadable'),
     fields=list(
