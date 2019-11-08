@@ -14,6 +14,16 @@ test.hmdbmetabolite.nbentries <- function(conn) {
 		expect_true(is.na(n))
 }
 
+# Test old accession numbers {{{1
+################################################################################
+
+test.old.accession <- function(conn) {
+
+    entry <- conn$getEntry('HMDB06006')
+    testthat::expect_is(entry, 'HmdbMetabolitesEntry')
+    testthat::expect_equal(entry$getFieldValue('accession'), 'HMDB0006006')
+}
+
 # Main {{{1
 ################################################################
 
@@ -32,7 +42,8 @@ conn <- biodb$getFactory()$createConn('hmdb.metabolites')
 
 # Run tests
 biodb::runGenericTests(conn)
-biodb::testThat("HMDB metabolite returns enough entries ", test.hmdbmetabolite.nbentries, conn=conn)
+biodb::testThat("HMDB metabolite returns enough entries.", test.hmdbmetabolite.nbentries, conn=conn)
+biodb::testThat("We can retrieve entries using old accession numbers.", test.old.accession, conn=conn)
 
 # Terminate Biodb
 biodb$terminate()

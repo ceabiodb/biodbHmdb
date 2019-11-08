@@ -56,17 +56,35 @@ getNbEntries=function(count=FALSE) {
     return(n)
 },
 
+# Correct IDs {{{3
+################################################################################
+
+correctIds=function(ids) {
+    # Overrides super class' method.
+
+    # Select IDs to correct
+    idsToCorrect <- grep('^[Hh][Mm][Dd][Bb][0-9]+$', perl=TRUE, ids)
+
+    # Extract ID numbers
+    idsNb <- as.integer(sub('^[A-Za-z]+([0-9]+)$', '\\1', ids[idsToCorrect]))
+
+    # Rewrite IDs
+    ids[idsToCorrect] <- sprintf('HMDB%07d', idsNb)
+
+    return(ids)
+},
+
 # Get entry page url {{{3
 ################################################################################
 
 getEntryPageUrl=function(id) {
     # Overrides super class' method.
-    
+
     fct <- function(x) {
         u <- c(.self$getPropValSlot('urls', 'base.url'), 'metabolites', x)
         BiodbUrl(url=u)$toString()
     }
-    
+
     return(vapply(id, fct, FUN.VALUE=''))
 },
 
