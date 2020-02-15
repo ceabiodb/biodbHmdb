@@ -1,0 +1,19 @@
+language: r
+cache: packages
+r: release
+
+env:
+    - BIODB_USERAGENT="biodbHmdb.test ; pierrick.roger@cea.fr"
+
+notifications:
+    email:
+        recipients:
+            - pierrick.roger@cea.fr
+
+before_install:
+    - R -e 'install.packages("BiocManager");BiocManager::install("BiocCheck")'
+
+script:
+    - make build
+    - make full.check || (cat /home/travis/build/pkrog/biodbHmdb/biodbHmdb.Rcheck/tests/testthat.Rout.fail && false)
+    - make bioc.check
