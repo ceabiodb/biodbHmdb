@@ -1,8 +1,28 @@
 # biodbHmdb
 
+[![Build Status](https://travis-ci.org/pkrog/biodbHmdb.svg?branch=master)](https://travis-ci.org/pkrog/biodbHmdb)
+
+An R package for accessing [HMDB](http://www.hmdb.ca) online database.
+
+## Introduction
+
+TODO
+
+## Examples
+
+TODO
+
+## Installation
+
+TODO
+
+## Documentation
+
+TODO
+
 ## Citations
 
-<http://www.hmdb.ca>
+HMDB website: <http://www.hmdb.ca>.
 
  * Wishart DS, Tzur D, Knox C, et al., HMDB: the Human Metabolome Database. Nucleic Acids Res. 2007 Jan;35(Database issue):D521-6, <https://doi.org/10.1093/nar/gkl923>.
  * Wishart DS, Knox C, Guo AC, et al., HMDB: a knowledgebase for the human metabolome. Nucleic Acids Res. 2009 37(Database issue):D603-610, <https://doi.org/10.1093/nar/gkn810>.
