@@ -28,6 +28,7 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
+#' @import methods
 #' @export HmdbMetabolitesConn
 #' @exportClass HmdbMetabolitesConn
 HmdbMetabolitesConn <- methods::setRefClass("HmdbMetabolitesConn",

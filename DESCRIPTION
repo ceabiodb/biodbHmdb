@@ -20,7 +20,7 @@ Suggests:
 Imports:
 	methods,
 	biodb
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Collate:
     'HmdbMetabolitesConn.R'
     'HmdbMetabolitesEntry.R'
