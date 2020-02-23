@@ -1,2 +1,4 @@
-Makefile
-cache
+^Makefile$
+^cache$
+^\.travis\.yml$
+^LICENSE$
