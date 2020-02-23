@@ -2,3 +2,4 @@ cache
 man
 tests/testthat/output
 *.gz
+*.Rcheck
