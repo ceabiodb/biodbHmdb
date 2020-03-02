@@ -17,6 +17,7 @@ before_install:
     - R -e 'devtools::install_github("pkrog/biodb", ref="dev_0.99", dependencies=TRUE, build_vignettes=FALSE)'
 
 script:
+    - make test
     - make build
     - make full.check || (cat /home/travis/build/pkrog/biodbHmdb/biodbHmdb.Rcheck/tests/testthat.Rout.fail && false)
     - make bioc.check
