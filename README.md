@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pkrog/biodbHmdb.svg?branch=master)](https://travis-ci.org/pkrog/biodbHmdb)
 
-An R package for accessing [HMDB](http://www.hmdb.ca) online database.
+An R package for accessing [HMDB](http://www.hmdb.ca) online database, based on R package/framework [biodb](https://github.com/pkrog/biodb/).
 
 ## Introduction
 

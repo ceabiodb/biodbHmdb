@@ -1,11 +1,3 @@
-# vi: fdm=marker ts=4 et cc=80 tw=80
-
-# HmdbMetabolitesConn {{{1
-################################################################################
-
-# Declaration {{{2
-################################################################################
-
 #' The connector class for the HMDB Metabolites database.
 #'
 #' This is a concrete connector class. It must never be instantiated directly,
@@ -37,13 +29,7 @@ HmdbMetabolitesConn <- methods::setRefClass("HmdbMetabolitesConn",
         .ns="character"
         ),
 
-# Public methods {{{2
-################################################################################
-
 methods=list(
-
-# Get nb entries {{{3
-################################################################################
 
 getNbEntries=function(count=FALSE) {
     # Overrides super class' method.
@@ -56,9 +42,6 @@ getNbEntries=function(count=FALSE) {
 
     return(n)
 },
-
-# Correct IDs {{{3
-################################################################################
 
 correctIds=function(ids) {
     # Overrides super class' method.
@@ -75,9 +58,6 @@ correctIds=function(ids) {
     return(ids)
 },
 
-# Get entry page url {{{3
-################################################################################
-
 getEntryPageUrl=function(id) {
     # Overrides super class' method.
 
@@ -88,9 +68,6 @@ getEntryPageUrl=function(id) {
 
     return(vapply(id, fct, FUN.VALUE=''))
 },
-
-# Get entry image url {{{3
-################################################################################
 
 getEntryImageUrl=function(id) {
     # Overrides super class' method.
@@ -105,12 +82,6 @@ getEntryImageUrl=function(id) {
 },
 
 
-# Private methods {{{2
-################################################################################
-
-# Do get entry content request {{{3
-################################################################################
-
 .doGetEntryContentRequest=function(id, concatenate=TRUE) {
 
     u <- c(.self$getPropValSlot('urls', 'base.url'), 'metabolites',
@@ -119,9 +90,6 @@ getEntryImageUrl=function(id) {
 
     return(url)
 },
-
-# Do download {{{3
-################################################################################
 
 .doDownload=function() {
 
@@ -134,9 +102,6 @@ getEntryImageUrl=function(id) {
     sched <- .self$getBiodb()$getRequestScheduler()
     sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
 },
-
-# Do extract download {{{3
-################################################################################
 
 .doExtractDownload=function() {
 
@@ -245,9 +210,6 @@ getEntryImageUrl=function(id) {
     .self$message('debug', 'Delete extract directory.')
     unlink(extract.dir, recursive=TRUE)
 },
-
-# Get entry ids {{{3
-################################################################################
 
 .doGetEntryIds=function(max.results=NA_integer_) {
 
