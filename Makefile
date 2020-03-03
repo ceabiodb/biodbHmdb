@@ -38,6 +38,9 @@ $(info "PKG_VERSION=$(PKG_VERSION)")
 
 RFLAGS=--slave --no-restore
 
+# For R CMD SHLIB
+export PKG_CXXFLAGS=$(shell R --slave -e "Rcpp:::CxxFlags()")
+
 # Set test file filter
 ifndef TEST_FILE
 TEST_FILE=NULL
@@ -48,12 +51,19 @@ endif
 # Default target {{{1
 ################################################################
 
-all:
+all: compile
+	R $(RFLAGS) CMD SHLIB src/*.cpp
+
+compile: R/RcppExports.R
+	R $(RFLAGS) CMD SHLIB -o src/biodbHmdb.so src/*.cpp
+
+R/RcppExports.R: src/*.cpp
+	R $(RFLAGS) -e "Rcpp::compileAttributes('$(CURDIR)')"
 
 # Check and test {{{1
 ################################################################
 
-check: clean.vignettes $(ZIPPED_PKG)
+check: clean.vignettes $(ZIPPED_PKG) R/RcppExports.R
 	time R CMD check --no-build-vignettes "$(ZIPPED_PKG)"
 # Use `R CMD check` instead of `devtools::test()` because the later failed once on Travis-CI:
 #   Warning in config_val_to_logical(check_incoming) :
@@ -69,7 +79,7 @@ bioc.check: clean.vignettes $(ZIPPED_PKG)
 	R $(RFLAGS) -e 'library(BiocCheck)' # Make sure library is loaded once in order to install the scripts.
 	time R CMD BiocCheck --new-package --quit-with-status --no-check-formatting "$(ZIPPED_PKG)"
 
-test:
+test: compile
 	R $(RFLAGS) -e "devtools::test('$(CURDIR)', filter=$(TEST_FILE), reporter=c('$(TESTTHAT_REPORTER)', 'fail'))"
 
 win:
@@ -84,7 +94,7 @@ $(ZIPPED_PKG) build: doc
 # Documentation {{{1
 ################################################################
 
-doc:
+doc: R/RcppExports.R
 	R $(RFLAGS) -e "devtools::document('$(CURDIR)')"
 
 vignettes: clean.vignettes
