@@ -19,14 +19,14 @@ testthat::expect_error(extractXmlEntries("some_non_existing_file", ""))
 testthat::expect_error(extractXmlEntries(XML_SINGLE_ENTRY, "some_non_existing_dir"))
 
 # Test empty XML file
-unlink(DST_DIR, recursive = TRUE)
-dir.create(DST_DIR)
+unlink(DST_DIR, recursive=TRUE)
+dir.create(DST_DIR, recursive=TRUE)
 extractXmlEntries(XML_EMPTY, DST_DIR)
 testthat::expect_length(Sys.glob(file.path(DST_DIR, '*')), 0)
 
 # Test XML file with wrong entry tags inside
-unlink(DST_DIR, recursive = TRUE)
-dir.create(DST_DIR)
+unlink(DST_DIR, recursive=TRUE)
+dir.create(DST_DIR, recursive=TRUE)
 extractXmlEntries(XML_WRONG_ENTRY_TAG, DST_DIR)
 files <- Sys.glob(file.path(DST_DIR, '*'))
 testthat::expect_length(files, 0)
@@ -39,7 +39,7 @@ testthat::expect_error(extractXmlEntries(XML_WRONG_ID_TAG, DST_DIR))
 
 # Test XML file with single entry
 unlink(DST_DIR, recursive = TRUE)
-dir.create(DST_DIR)
+dir.create(DST_DIR, recursive=TRUE)
 files <- extractXmlEntries(XML_SINGLE_ENTRY, DST_DIR)
 testthat::expect_length(files, 1)
 testthat::expect_equal(names(files), 'HMDB00001')
@@ -49,7 +49,7 @@ testthat::expect_true(all(vapply(found_files, function(f) file.info(f)$size, FUN
 
 # Test XML file with single entry and header tags
 unlink(DST_DIR, recursive = TRUE)
-dir.create(DST_DIR)
+dir.create(DST_DIR, recursive=TRUE)
 files <- extractXmlEntries(XML_WITH_HEADER_TAGS, DST_DIR)
 testthat::expect_length(files, 1)
 testthat::expect_equal(names(files), 'HMDB00001')
@@ -59,7 +59,7 @@ testthat::expect_true(all(vapply(found_files, function(f) file.info(f)$size, FUN
 
 # Test XML file with two entries
 unlink(DST_DIR, recursive = TRUE)
-dir.create(DST_DIR)
+dir.create(DST_DIR, recursive=TRUE)
 files <- extractXmlEntries(XML_TWO_ENTRIES, DST_DIR)
 testthat::expect_length(files, 2)
 testthat::expect_equal(names(files), c('HMDB00001', 'HMDB00143'))
