@@ -11,6 +11,8 @@ DST_DIR <- file.path(TEST_DIR, 'output', 'extract_dir')
 
 testthat::context("Extracting of XML entries")
 
+testthat::test_that('extractXmlEntries() works fine.', {
+
 # Test bad XML file
 testthat::expect_error(extractXmlEntries("", ""))
 testthat::expect_error(extractXmlEntries("some_non_existing_file", ""))
@@ -66,3 +68,5 @@ testthat::expect_equal(names(files), c('HMDB00001', 'HMDB00143'))
 found_files <- Sys.glob(file.path(DST_DIR, '*'))
 testthat::expect_identical(unname(files), found_files)
 testthat::expect_true(all(vapply(found_files, function(f) file.info(f)$size, FUN.VALUE=1) > 0))
+
+})
