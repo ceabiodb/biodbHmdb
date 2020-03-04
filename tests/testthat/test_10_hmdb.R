@@ -1,8 +1,3 @@
-# vi: fdm=marker
-
-# Test HMDB Metabolite nb entries {{{1
-################################################################
-
 test.hmdbmetabolite.nbentries <- function(conn) {
 
 	# Check number of entries
@@ -14,9 +9,6 @@ test.hmdbmetabolite.nbentries <- function(conn) {
 		expect_true(is.na(n))
 }
 
-# Test old accession numbers {{{1
-################################################################################
-
 test.old.accession <- function(conn) {
 
     entry <- conn$getEntry('HMDB06006')
@@ -24,8 +16,9 @@ test.old.accession <- function(conn) {
     testthat::expect_equal(entry$getFieldValue('accession'), 'HMDB0006006')
 }
 
-# Main {{{1
-################################################################
+########
+# MAIN #
+########
 
 # Instantiate Biodb
 biodb <- biodb::createBiodbTestInstance(log='test_hmdb.log', ack=TRUE)

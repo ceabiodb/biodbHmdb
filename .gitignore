@@ -3,3 +3,5 @@ man
 tests/testthat/output
 *.gz
 *.Rcheck
+src/*.so
+src/*.o

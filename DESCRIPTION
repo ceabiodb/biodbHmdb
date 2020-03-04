@@ -19,9 +19,14 @@ Suggests:
 	rmarkdown
 Imports:
 	methods,
-	biodb
+	biodb,
+	Rcpp
+LinkingTo:
+	Rcpp
+NeedsCompilation: yes
 RoxygenNote: 7.0.2
 Collate:
     'HmdbMetabolitesConn.R'
     'HmdbMetabolitesEntry.R'
+    RcppExports.R
     'package.R'
