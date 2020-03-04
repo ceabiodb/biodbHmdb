@@ -102,92 +102,17 @@ getEntryImageUrl=function(id) {
     sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
 },
 
-.extractEntriesFromXmlFile=function(xml.file, extract.dir) {
-
-    entryFiles <- character()
-
-    # Open file in binary mode
-    fileConn <- file(xml.file, open='rb')
-
-    # Extract entries from XML file
-    .self$message('debug', 'Extract entries from XML file into "', extract.dir,
-                  '".')
-    chunk.size <- 2**16
-    total.bytes <- file.info(xml.file)$size
-    bytes.read <- 0
-    xml.chunks <- character()
-    .self$debug("Read XML file by chunk of ", chunk.size, " characters.")
-    done.reading <- FALSE
-    while ( ! done.reading) {
-
-        first <- (bytes.read == 0)
-
-        # Read chunk from file
-        chunk <- readChar(fileConn, chunk.size)
-        done.reading <- (nchar(chunk) < chunk.size)
-
-        # Send progress message
-        bytes.read <- bytes.read + nchar(chunk, type='bytes')
-        .self$progressMsg(msg='Reading all HMDB metabolites from XML file.',
-                          index=bytes.read, total=total.bytes, first=first)
-
-        # Is there a complete entry XML (<metabolite>...</metabolite>) in the
-        # loaded chunks?
-        if (length(grep('</metabolite>', chunk)) > 0
-            || (length(xml.chunks) > 0
-                && length(grep('</metabolite>',
-                               paste0(xml.chunks[[length(xml.chunks)]],
-                                      chunk))) > 0)) {
-
-            # Paste all chunks together
-            xml <- paste(c(xml.chunks, chunk), collapse='')
-
-            # Search entry definitions
-            re <- stringr::regex('^(.*?)(<metabolite>.*</metabolite>)(.*)$',
-                                 dotall=TRUE)
-            match <- stringr::str_match(xml, re)
-            if (is.na(match[1, 1]))
-                .self$error('Cannot find matching <metabolite> tag in HMDB',
-                            ' XML entries file.')
-            metabolites <- match[1, 3]
-            xml.chunks <- match[1, 4]
-
-            # Get all metabolites definition
-            re <- stringr::regex('<metabolite>.*?</metabolite>', dotall=TRUE)
-            metabolites <- stringr::str_extract_all(metabolites, re)[[1]]
-
-            # Get IDs
-            re <- '<accession>(HMDB[0-9]+)</accession>'
-            ids <- stringr::str_match(metabolites, re)[, 2]
-
-            # Write all XML entries into files
-            curFiles <- file.path(extract.dir, paste(ids, 'xml', sep='.'))
-            mapply(function(cnt, f) { if ( ! is.null(cnt)) cat(cnt, file=f) },
-                   metabolites, curFiles)
-            names(curFiles) <- ids
-            entryFiles <- c(entryFiles, curFiles)
-        }
-        else
-            xml.chunks <- c(xml.chunks, chunk)
-    }
-
-    # Close file
-    close(fileConn)
-
-    return(entryFiles)
-},
-
 .doExtractDownload=function() {
 
     .self$info("Extracting content of downloaded HMDB metabolite database...")
     cch <- .self$getBiodb()$getPersistentCache()
 
     # Expand zip
-    extract.dir <- tempfile(.self$getId())
+    extract.dir <- cch$getTmpFolderPath()
     zip.path <- .self$getDownloadPath()
-    .self$message('debug', paste("Unzipping ", zip.path, "...", sep=''))
+    .self$debug(paste("Unzipping ", zip.path, "...", sep=''))
     utils::unzip(zip.path, exdir=extract.dir)
-    .self$message('debug', paste("Unzipped ", zip.path, ".", sep=''))
+    .self$debug(paste("Unzipped ", zip.path, ".", sep=''))
 
     # Search for extracted XML file
     files <- list.files(path=extract.dir)
@@ -211,21 +136,24 @@ getEntryImageUrl=function(id) {
     .self$debug("Found XML file ", xml.file, " in ZIP file.")
 
     # Delete existing cache files
-    .self$message('debug', 'Delete existing entry files in cache system.')
+    .self$debug('Delete existing entry files in cache system.')
     cch$deleteFiles(.self$getCacheId(),
                     ext=.self$getPropertyValue('entry.content.type'))
 
     # Extract entries
-    entryFiles <- .self$.extractEntriesFromXmlFile(xml.file, extract.dir)
+#    entryFiles <- .self$.extractEntriesFromXmlFile(xml.file, extract.dir)
+    .self$debug('Extract entries from XML file "', xml.file,
+                '", into "', extract.dir, '".')
+    entryFiles <- extractXmlEntries(xml.file, extract.dir)
 
     # Move extracted files into cache
     ctype <- .self$getPropertyValue('entry.content.type')
     cch$moveFilesIntoCache(unname(entryFiles), cache.id=.self$getCacheId(), name=names(entryFiles),
                            ext=ctype)
 
-    # Remove extract directory
-    .self$message('debug', 'Delete extract directory.')
-    unlink(extract.dir, recursive=TRUE)
+    # Remove extracted XML database file
+    .self$debug('Delete extracted database.')
+    unlink(xml.file)
 },
 
 .doGetEntryIds=function(max.results=NA_integer_) {
