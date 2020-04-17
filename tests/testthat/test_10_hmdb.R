@@ -16,12 +16,11 @@ test.old.accession <- function(conn) {
     testthat::expect_equal(entry$getFieldValue('accession'), 'HMDB0006006')
 }
 
-########
-# MAIN #
+# MAIN
 ########
 
 # Instantiate Biodb
-biodb <- biodb::createBiodbTestInstance(log='test_hmdb.log', ack=TRUE)
+biodb <- biodb::createBiodbTestInstance(log='hmdb_test.log', ack=TRUE)
 
 # Load package definitions
 file <- system.file("definitions.yml", package='biodbHmdb')
