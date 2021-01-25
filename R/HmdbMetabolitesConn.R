@@ -58,6 +58,44 @@ correctIds=function(ids) {
     return(ids)
 },
 
+
+.doSearchForEntries=function(fields=NULL, max.results=NA_integer_) {
+    # Overrides super class' method.
+
+    ids <- character()
+
+    # Loop on all entries
+    i <- 0
+    for (id in .self$getEntryIds()) {
+        
+        # Get entry
+        entry <- .self$getEntry(id)
+
+        # Try to match entry
+        tryMatch <- function(f) {
+            m <- entry$hasField(f)
+            if (m) {
+                fct <- function(x) {
+                    n <- grep(x, entry$getFieldValue(f), fixed=TRUE)
+                    return(length(n) > 0)
+                }
+                m <- all(vapply(fields[[f]], fct, FUN.VALUE=TRUE))
+            }
+            return(m)
+        }
+        matched <- all(vapply(fields, tryMatch, FUN.VALUE=TRUE))
+        if (matched)
+            ids <- c(ids, id)
+
+        # Send progress message
+        i <- i + 1
+        msg <- 'Searching for entries.'
+        .self$.sendProgress(msg=msg, index=i, total=length(ids), first=(i == 1))
+    }
+
+    return(ids)
+},
+
 getEntryPageUrl=function(id) {
     # Overrides super class' method.
 
@@ -80,7 +118,6 @@ getEntryImageUrl=function(id) {
 
     return(vapply(id, fct, FUN.VALUE=''))
 },
-
 
 .doGetEntryContentRequest=function(id, concatenate=TRUE) {
 

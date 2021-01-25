@@ -5,6 +5,7 @@
 	"chebi.id": "50599",
 	"kegg.compound.id": "C01152",
 	"name": [ "1-Methylhistidine", "(2S)-2-amino-3-(1-Methyl-1H-imidazol-4-yl)propanoic acid", "Pi-methylhistidine", "(2S)-2-amino-3-(1-Methyl-1H-imidazol-4-yl)propanoate", "1 Methylhistidine", "1-Methyl histidine", "1-Methyl-histidine", "1-Methyl-L-histidine", "1-MHis", "1-N-Methyl-L-histidine", "L-1-Methylhistidine", "N1-Methyl-L-histidine", "1-Methylhistidine dihydrochloride", "Renal disease", "Nephropathy", "Non-insulin-dependent diabetes mellitus", "Niddm", "Adult-onset diabetes", "Striated muscle", "Fecal", "Stool", "Faecal", "Faeces", "Csf", "Cytoplasma" ],
+	"description": "One-methylhistidine (1-MHis) is derived mainly from the anserine of dietary flesh sources, especially poultry. The enzyme, carnosinase, splits anserine into b-alanine and 1-MHis. High levels of 1-MHis tend to inhibit the enzyme carnosinase and increase anserine levels. Conversely, genetic variants with deficient carnosinase activity in plasma show increased 1-MHis excretions when they consume a high meat diet. Reduced serum carnosinase activity is also found in patients with Parkinson's disease and multiple sclerosis and patients following a cerebrovascular accident. Vitamin E deficiency can lead to 1-methylhistidinuria from increased oxidative effects in skeletal muscle. 1-Methylhistidine is a biomarker for the consumption of meat, especially red meat.",
 	"formula": "C7H11N3O2",
 	"average.mass": 169.1811,
 	"monoisotopic.mass": 169.085126611,

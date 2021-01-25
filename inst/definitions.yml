@@ -20,12 +20,16 @@ databases:
       inchikey: //inchikey
       monoisotopic.mass: //monisotopic_molecular_weight
       name: /metabolite/name
+      description: /metabolite/description
       smiles: //smiles
       super.class: //super_class
     scheduler.n: 3
     urls:
       base.url: http://www.hmdb.ca/
     dwnld.ext: zip
+    searchable.fields:
+      - name
+      - description
 
 fields:
 
