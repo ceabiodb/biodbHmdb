@@ -6,19 +6,31 @@ An R package for accessing [HMDB](http://www.hmdb.ca) online database, based on 
 
 ## Introduction
 
-TODO
-
-## Examples
-
-TODO
+This extension package to [biodb](https://github.com/pkrog/biodb/) implements a connector to the [HMDB](http://www.hmdb.ca) database.
 
 ## Installation
 
-TODO
+Install the latest version of this package by running the following commands:
+```r
+devtools::install_github('pkrog/biodb', dependencies=TRUE)
+devtools::install_github('pkrog/biodbHmdb', dependencies=TRUE)
+```
+
+## Examples
+
+Searching for entries with multiple words inside the field "description":
+```r
+mybiodb <- biodb::Biodb()
+conn <- mybiodb$getFactory()$createConn('hmdb.metabolites')
+ids <- conn$searchForEntries(fields=list(description=c('milk', 'Oligosaccharide')))
+```
 
 ## Documentation
 
-TODO
+To get documentation on the implemented connector once inside R, run:
+```r
+?biodbHmdb::HmdbMetabolitesConn
+```
 
 ## Citations
 

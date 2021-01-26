@@ -63,11 +63,19 @@ correctIds=function(ids) {
     # Overrides super class' method.
 
     ids <- character()
+        .self$getBiodb()$debug("fields NAMES = ", paste(names(fields), collapse=", "))
+        .self$getBiodb()$debug("fields VALUES = ", paste(unname(fields), collapse=", "))
+        .self$getBiodb()$debug("fields VALUES = ", paste(unname(fields), collapse=", "))
 
     # Loop on all entries
     i <- 0
-    for (id in .self$getEntryIds()) {
-        
+    allIds <- .self$getEntryIds()
+        .self$getBiodb()$debug("ALL IDS = ", paste(allIds[1:10], collapse=", "))
+        .self$getBiodb()$debug("COUNT ALL IDS = ", length(allIds))
+    for (id in allIds) {
+
+        .self$getBiodb()$debug("I = ", i)
+
         # Get entry
         entry <- .self$getEntry(id)
 
@@ -76,21 +84,30 @@ correctIds=function(ids) {
             m <- entry$hasField(f)
             if (m) {
                 fct <- function(x) {
-                    n <- grep(x, entry$getFieldValue(f), fixed=TRUE)
+                    n <- grep(tolower(x), tolower(entry$getFieldValue(f)),
+                              fixed=TRUE)
                     return(length(n) > 0)
                 }
                 m <- all(vapply(fields[[f]], fct, FUN.VALUE=TRUE))
             }
             return(m)
         }
-        matched <- all(vapply(fields, tryMatch, FUN.VALUE=TRUE))
+        matched <- all(vapply(names(fields), tryMatch, FUN.VALUE=TRUE))
+        .self$getBiodb()$debug("MATCHED = ", matched)
         if (matched)
             ids <- c(ids, id)
+        .self$getBiodb()$debug("COUNT IDS = ", length(ids))
+
+        # Enough results?
+        if ( ! is.null(max.results) && ! is.na(max.results)
+            && length(ids) >= max.results)
+            break
 
         # Send progress message
         i <- i + 1
         msg <- 'Searching for entries.'
-        .self$.sendProgress(msg=msg, index=i, total=length(ids), first=(i == 1))
+        .self$getBiodb()$.sendProgress(msg=msg, index=i, total=length(allIds),
+                                       first=(i == 1), found=length(ids))
     }
 
     return(ids)
@@ -201,12 +218,15 @@ getEntryImageUrl=function(id) {
     # Download
     .self$download()
 
+    .self$getBiodb()$debug(".doGetEntryIds 10")
     if (.self$isDownloaded()) {
 
+    .self$getBiodb()$debug(".doGetEntryIds 11")
         # Get IDs from cache
         ctype <- .self$getPropertyValue('entry.content.type')
         ids <- cch$listFiles(.self$getCacheId(),
                              ext=ctype, extract.name=TRUE)
+    .self$getBiodb()$debug("COUNT IDS = ", length(ids))
 
         # Filter out wrong IDs
         ids <- ids[grepl("^HMDB[0-9]+$", ids, perl=TRUE)]
