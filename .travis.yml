@@ -11,13 +11,16 @@ notifications:
             - pierrick.roger@cea.fr
 
 before_install:
+    - sudo apt install libgit2-dev
     - R -e 'install.packages("BiocManager");BiocManager::install("BiocCheck")'
     - R -e 'install.packages("devtools", dependencies=TRUE)'
-# TODO switch to master branch when ready.
     - R -e 'devtools::install_github("pkrog/biodb", ref="dev_0.99", dependencies=TRUE, build_vignettes=FALSE)'
+    - PATH="$PATH:$HOME/R/Library/BiocCheck/script" # Add BiocCheck script dir to PATH because of failure while installing scripts to /opt/R/4.0.2/lib/R/bin (owned by root) as travis user.
 
 script:
-    - make test
     - make build
     - make full.check || (cat /home/travis/build/pkrog/biodbHmdb/biodbHmdb.Rcheck/tests/testthat.Rout.fail && false)
     - make bioc.check
+
+after_success:
+    - Rscript -e 'covr::codecov()'
