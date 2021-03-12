@@ -61,6 +61,9 @@ compile: R/RcppExports.R
 R/RcppExports.R: src/*.cpp
 	R $(RFLAGS) -e "Rcpp::compileAttributes('$(CURDIR)')"
 
+coverage:
+	R $(RFLAGS) -e "covr::codecov()"
+
 # Check and test {{{1
 ################################################################
 
@@ -141,4 +144,4 @@ clean.cache:
 # Phony targets {{{1
 ################################################################
 
-.PHONY: all clean win test build check vignettes install uninstall devtools.check devtools.build clean.build clean.cache doc check.version
+.PHONY: all clean win test build check vignettes install uninstall devtools.check devtools.build clean.build clean.cache doc check.version coverage

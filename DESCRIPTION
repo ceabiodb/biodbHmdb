@@ -5,7 +5,7 @@ Authors@R: c(person("Pierrick", "Roger", email = "pierrick.roger@cea.fr", role =
 Description: The biodbHmdb library provides access to the HMDB Database, using biodb package framework.
 biocViews: Software, Infrastructure, DataImport
 Depends:
-    R (>= 3.6)
+    R (>= 4.0)
 License: AGPL-3
 Encoding: UTF-8
 LazyData: true
