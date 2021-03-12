@@ -58,7 +58,6 @@ correctIds=function(ids) {
     return(ids)
 },
 
-
 .doSearchForEntries=function(fields=NULL, max.results=NA_integer_) {
     # Overrides super class' method.
 
