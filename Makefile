@@ -63,24 +63,15 @@ R/RcppExports.R: src/*.cpp
 # Check and test {{{1
 ################################################################
 
-check: clean.vignettes $(ZIPPED_PKG) R/RcppExports.R
-	time R CMD check --no-build-vignettes "$(ZIPPED_PKG)"
-# Use `R CMD check` instead of `devtools::test()` because the later failed once on Travis-CI:
-#   Warning in config_val_to_logical(check_incoming) :
-#     cannot coerce ‘FALSE false’ to logical
-#   Error in if (check_incoming) check_CRAN_incoming(!check_incoming_remote) : 
-#     missing value where TRUE/FALSE needed
-#   Execution halted
-
-full.check: clean.vignettes $(ZIPPED_PKG)
-	time R CMD check "$(ZIPPED_PKG)"
-
-bioc.check: clean.vignettes $(ZIPPED_PKG)
-	R $(RFLAGS) -e 'library(BiocCheck)' # Make sure library is loaded once in order to install the scripts.
-	time R CMD BiocCheck --new-package --quit-with-status --no-check-formatting "$(ZIPPED_PKG)"
+check: clean.vignettes $(ZIPPED_PKG)
+	R $(RFLAGS) -e 'BiocCheck::BiocCheck("$(ZIPPED_PKG)", `new-package`=TRUE, `quit-with-status`=TRUE, `no-check-formatting`=TRUE)'
 
 test: compile
+ifdef VIM
+	R $(RFLAGS) -e "devtools::test('$(CURDIR)', filter=$(TEST_FILE), reporter=c('$(TESTTHAT_REPORTER)', 'fail'))" | sed 's!\([^/A-Za-z_-]\)\(test[^/A-Za-z][^/]\+\.R\)!\1tests/testthat/\2!'
+else
 	R $(RFLAGS) -e "devtools::test('$(CURDIR)', filter=$(TEST_FILE), reporter=c('$(TESTTHAT_REPORTER)', 'fail'))"
+endif
 
 win:
 	R $(RFLAGS) -e "devtools::check_win_devel('$(CURDIR)')"
@@ -88,7 +79,9 @@ win:
 # Build {{{1
 ################################################################
 
-$(ZIPPED_PKG) build: doc
+build: $(ZIPPED_PKG)
+
+$(ZIPPED_PKG): doc
 	R CMD build .
 
 # Documentation {{{1
