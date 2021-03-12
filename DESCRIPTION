@@ -2,21 +2,22 @@ Package: biodbHmdb
 Title: biodbHmdb, a library for connecting to the HMDB Database
 Version: 0.99.0
 Authors@R: c(person("Pierrick", "Roger", email = "pierrick.roger@cea.fr", role = c("aut", "cre")))
-Description: The biodbHmdb library provides access to the HMDB Database, using biodb package framework.
+Description: The biodbHmdb library is an extension of the biodb framework package that provides access to the HMDB Metabolites database. It allows to download the whole HMDB Metabolites database locally, access entries and search for entries by name or description. A future version of this package will also include a search by mass and mass spectra annotation.
 biocViews: Software, Infrastructure, DataImport
 Depends:
-    R (>= 3.6)
+    R (>= 4.0)
 License: AGPL-3
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 Suggests:
-	BiocStyle,
-	roxygen2,
-	devtools,
-	testthat (>= 2.0.0),
-	knitr,
-	rmarkdown
+    BiocStyle,
+    roxygen2,
+    devtools,
+    testthat (>= 2.0.0),
+    knitr,
+    rmarkdown,
+    covr
 Imports:
 	methods,
 	biodb,
@@ -24,7 +25,7 @@ Imports:
 LinkingTo:
 	Rcpp
 NeedsCompilation: yes
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Collate:
     'HmdbMetabolitesConn.R'
     'HmdbMetabolitesEntry.R'

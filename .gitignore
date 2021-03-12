@@ -5,3 +5,7 @@ tests/testthat/output
 *.Rcheck
 src/*.so
 src/*.o
+doc
+Meta
+*.gcda
+*.gcno
