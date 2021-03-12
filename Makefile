@@ -30,6 +30,7 @@ endif
 PKG_VERSION=$(shell grep '^Version:' DESCRIPTION | sed 's/^Version: //')
 GIT_VERSION=$(shell git describe --tags | sed 's/^v\([0-9.]*\)[a-z]*.*$$/\1/')
 ZIPPED_PKG=biodbHmdb_$(PKG_VERSION).tar.gz
+REF_BIB:=$(wildcard ../public-notes/references.bib)
 
 # Display values of main variables
 $(info "BIODB_CACHE_DIRECTORY=$(BIODB_CACHE_DIRECTORY)")
@@ -92,8 +93,14 @@ doc: R/RcppExports.R
 
 vignettes: clean.vignettes
 	@echo Build vignettes for already installed package, not from local soures.
-	time R $(RFLAGS) -e "devtools::build_vignettes('$(CURDIR)')"
+	R $(RFLAGS) -e "devtools::build_vignettes('$(CURDIR)')"
 
+ifneq ($(REF_BIB),)
+vignettes: vignettes/references.bib
+
+vignettes/references.bib: $(REF_BIB)
+	cp $< $@
+endif
 
 # Install {{{1
 ################################################################
@@ -122,6 +129,7 @@ clean: clean.build clean.vignettes
 	$(RM) -r Meta
 
 clean.vignettes:
+	$(RM) vignettes/*.R vignettes/*.html
 	$(RM) -r doc
 
 clean.build:

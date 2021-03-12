@@ -2,3 +2,5 @@
 ^cache$
 ^\.travis\.yml$
 ^LICENSE$
+^doc$
+^Meta$

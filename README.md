@@ -1,6 +1,7 @@
 # biodbHmdb
 
 [![Build Status](https://travis-ci.org/pkrog/biodbHmdb.svg?branch=master)](https://travis-ci.org/pkrog/biodbHmdb)
+[![Codecov test coverage](https://codecov.io/gh/pkrog/biodbHmdb/branch/master/graph/badge.svg)](https://codecov.io/gh/pkrog/biodbHmdb?branch=master)
 
 An R package for accessing [HMDB](http://www.hmdb.ca) online database, based on R package/framework [biodb](https://github.com/pkrog/biodb/).
 

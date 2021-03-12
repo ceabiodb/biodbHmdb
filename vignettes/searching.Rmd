@@ -1,0 +1,98 @@
+---
+title: "Searching for HMDB entries"
+author: "Pierrick Roger"
+date: "`r doc_date()`"
+package: "`r pkg_ver('biodbHmdb')`"
+abstract: |
+  This vignette shows how to search for entries inside the HMDB database.
+vignette: |
+  %\VignetteIndexEntry{Searching for entries by name or description.}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+  BiocStyle::pdf_document: default
+bibliography: references.bib
+---
+
+# Purpose
+
+We present here the different ways to search for *HMDB* [@wishart2013_HMDB]
+entries with this package.
+
+Note that the whole *HMDB* is downloaded locally by *biodb* and stored on disk,
+since this is the only way to access *HMDB* programmatically.
+Any search on *HMDB* is hence currently run on the local machine.
+
+# Initialization
+
+First we need to initialize *biodb* and create a connector to *HMDB*:
+```{r, results='hide'}
+mybiodb <- biodb::Biodb()
+conn <- mybiodb$getFactory()$createConn('hmdb.metabolites')
+```
+
+# Searching by name
+
+We use here the generic *biodb* method `searchForEntries()` to search for
+entries by name:
+```{r}
+id <- conn$searchForEntries(list(name='1-Methylhistidine'), max.results=1)
+id
+```
+We limit the search result to one entry with the `max.results` field.
+
+The first parameter is the filtering criterion, expressed as a list whose
+single key (in our case) is the *biodb* field on which we want to filter.
+The value is the text we want to search for.
+See the documentation of `searchForEntries()` inside `?biodb::BiodbConn`.
+
+We could also use several strings to search for, in which case an entry will be
+matched if its field value contains all the specified strings:
+```{r}
+conn$searchForEntries(list(name=c('propanoic', 'acid')), max.results=1)
+```
+
+To look at the values of the entry, you may convert it to a data frame:
+```{r}
+entryDf <- conn$getEntry(id)$getFieldsAsDataframe(fields=c('accession', 'name'))
+```
+See table \@ref(tab:entryByNameTable) for the content of this data frame.
+
+```{r entryByNameTable, echo=FALSE, results='asis'}
+knitr::kable(entryDf, "pipe", caption="The entry returned when searching by name.")
+```
+
+# Searching inside the "description" field
+
+Searching inside the `description` field can be done in the same way as for the
+`name` field.
+Here is a search with multiple strings to match:
+```{r}
+id <- conn$searchForEntries(list(description=c('Parkinson', 'sclerosis')), max.results=1)
+id
+```
+
+Again, you can look at the values of the entry through a data frame:
+```{r}
+entryDf <- conn$getEntry(id)$getFieldsAsDataframe(fields=c('accession', 'name', 'description'))
+```
+See table \@ref(tab:entryByDescTable) for the content of this data frame.
+
+```{r entryByDescTable, echo=FALSE, results='asis'}
+knitr::kable(entryDf, "pipe", caption="The entry returned when searching by description.")
+```
+
+# Closing biodb instance
+
+When done with your *biodb* instance you have to terminate it, in order to
+ensure release of resources (file handles, database connection, etc):
+```{r}
+mybiodb$terminate()
+```
+
+# References
