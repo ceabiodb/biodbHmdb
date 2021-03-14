@@ -15,7 +15,7 @@ export _R_S3_METHOD_REGISTRATION_NOTE_OVERWRITES_=no
 
 # Set cache folder
 ifndef BIODB_CACHE_DIRECTORY
-export BIODB_CACHE_DIRECTORY=$(PWD)/cache
+export BIODB_CACHE_DIRECTORY=$(CURDIR)/cache
 endif
 
 # Set testthat reporter
@@ -62,7 +62,7 @@ R/RcppExports.R: src/*.cpp
 	R $(RFLAGS) -e "Rcpp::compileAttributes('$(CURDIR)')"
 
 coverage:
-	R $(RFLAGS) -e "covr::codecov()"
+	R $(RFLAGS) -e "covr::codecov(token='$(CODECOV_BIODB_HMDB_TOKEN)', quiet=FALSE)"
 
 # Check and test {{{1
 ################################################################

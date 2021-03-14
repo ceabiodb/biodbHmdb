@@ -104,7 +104,7 @@ Rcpp::StringVector extractXmlEntries(const std::string& xmlFile,
 	// Check destination folder exists
 	struct stat info;
 	if (stat(extractDir.c_str(), &info) != 0 || ! (info.st_mode & S_IFDIR))
-		Rcpp::stop("Destination folder does not exist.");
+		Rcpp::stop("Destination folder \"%s\" does not exist.", extractDir.c_str());
 
 	// Open XML file
 	std::ifstream inf(xmlFile.c_str());
