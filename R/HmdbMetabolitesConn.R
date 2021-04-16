@@ -58,13 +58,16 @@ correctIds=function(ids) {
     return(ids)
 },
 
-.doSearchForEntries=function(fields=NULL, max.results=NA_integer_) {
+.doSearchForEntries=function(fields=NULL, max.results=0) {
     # Overrides super class' method.
 
     ids <- character()
-        .self$getBiodb()$debug("fields NAMES = ", paste(names(fields), collapse=", "))
-        .self$getBiodb()$debug("fields VALUES = ", paste(unname(fields), collapse=", "))
-        .self$getBiodb()$debug("fields VALUES = ", paste(unname(fields), collapse=", "))
+    .self$getBiodb()$debug("fields NAMES = ",
+                           paste(names(fields), collapse=", "))
+    .self$getBiodb()$debug("fields VALUES = ",
+                           paste(unname(fields), collapse=", "))
+    .self$getBiodb()$debug("fields VALUES = ",
+                           paste(unname(fields), collapse=", "))
 
     # Loop on all entries
     i <- 0

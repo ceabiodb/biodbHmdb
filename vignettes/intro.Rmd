@@ -1,12 +1,10 @@
 ---
-title: "Searching for HMDB entries"
+title: "An introduction to biodbHmdb"
 author: "Pierrick Roger"
-date: "`r doc_date()`"
-package: "`r pkg_ver('biodbHmdb')`"
-abstract: |
-  This vignette shows how to search for entries inside the HMDB database.
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('biodbHmdb')`"
 vignette: |
-  %\VignetteIndexEntry{Searching for entries by name or description.}
+  %\VignetteIndexEntry{Introduction to the biodbHmdb package.}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output:
@@ -21,6 +19,9 @@ bibliography: references.bib
 
 # Purpose
 
+biodbHmdb is a *biodb* extension package that implements a connector to
+HMDB Metabolites.
+
 We present here the different ways to search for *HMDB* [@wishart2013_HMDB]
 entries with this package.
 
@@ -30,10 +31,51 @@ Any search on *HMDB* is hence currently run on the local machine.
 
 # Initialization
 
-First we need to initialize *biodb* and create a connector to *HMDB*:
+The first step in using *biodbHmdb*, is to create an instance of the biodb
+class `Biodb` from the main *biodb* package. This is done by calling the
+constructor of the class:
 ```{r, results='hide'}
 mybiodb <- biodb::Biodb()
+```
+During this step the configuration is set up, the cache system is initialized
+and extension packages are loaded.
+
+We will see at the end of this vignette that the *biodb* instance needs to be
+terminated with a call to the `terminate()` method.
+
+# Creating a connector to HMDB Metabolites
+
+In *biodb* the connection to a database is handled by a connector instance that
+you can get from the factory.
+biodbHmdb implements a connector to a remote database.
+Here is the code to instantiate a connector:
+```{r}
 conn <- mybiodb$getFactory()$createConn('hmdb.metabolites')
+```
+
+# Accessing entries
+
+To get the number of entries stored inside the database, run:
+```{r}
+conn$getNbEntries()
+```
+
+To get some of the first entry IDs (accession numbers) from the database, run:
+```{r}
+ids <- conn$getEntryIds(2)
+ids
+```
+
+To retrieve entries, use:
+```{r}
+entries <- conn$getEntry(ids)
+entries
+```
+
+To convert a list of entries into a dataframe, run:
+```{r}
+x <- mybiodb$entriesToDataframe(entries)
+x
 ```
 
 # Searching by name
@@ -94,5 +136,3 @@ ensure release of resources (file handles, database connection, etc):
 ```{r}
 mybiodb$terminate()
 ```
-
-# References

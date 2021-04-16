@@ -1,0 +1,18 @@
+pkgName: biodbHmdb
+email: pierrick.roger@cea.fr
+dbName: hmdb.metabolites
+dbTitle: HMDB Metabolites
+pkgLicense: AGPL-3
+firstname: Pierrick
+lastname: Roger
+newPkg: yes
+connType: compound
+entryType: xml
+editable: no
+writable: no
+remote: yes
+downloadable: yes
+makefile: yes
+rcpp: yes
+vignetteName: intro
+githubRepos: pkrog/biodbHmdb
