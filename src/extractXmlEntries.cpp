@@ -1,85 +1,11 @@
 #include <Rcpp.h>
 #include <fstream>
 #include <sys/stat.h>
-#include <string.h>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
-struct Tag {
-	const char* start;
-	const char* stop;
-	const char* start_end;
-	const char* stop_end;
-	const char* p;
-	bool inside;
-	bool is_on_start_tag;
-	bool is_on_stop_tag;
-
-	Tag(const char* start, const char* stop) {
-		this->start = start;
-		this->stop = stop;
-		this->start_end = start + strlen(start) - 1;
-		this->stop_end = stop + strlen(stop) - 1;
-		this->reset();
-	}
-
-	void reset() {
-		this->p = this->start;
-		this->inside = false;
-		this->is_on_start_tag = false;
-		this->is_on_stop_tag = false;
-	}
-
-	bool isInside() {
-		return this->inside;
-	}
-
-	bool isOnStartTag() {
-		return this->is_on_start_tag;
-	}
-
-	bool isOnStopTag() {
-		return this->is_on_stop_tag;
-	}
-
-	void advance(char c) {
-
-		this->is_on_start_tag = false;
-		this->is_on_stop_tag = false;
-
-		// Look for entry start tag
-		if ( ! this->inside) {
-			if (c == *this->p) {
-				if (this->p == this->start_end) {
-					this->is_on_start_tag = true;
-					this->inside = true;
-					this->p = this->stop;
-				}
-				else
-					++this->p;
-			}
-			else
-				this->p = this->start;
-		}
-
-		// Look for entry end tag
-		else {
-			if (c == *this->p) {
-				if (this->p == this->stop_end) {
-					this->is_on_stop_tag = true;
-					this->inside = false;
-					this->p = this->start;
-				}
-				else
-					++this->p;
-			}
-			else
-				this->p = this->stop;
-		}
-	}
-};
+#include "Tag.hpp"
 
 // ' Extract entries from HMDB XML database file.
 // '
