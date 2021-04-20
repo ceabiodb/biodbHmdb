@@ -195,7 +195,8 @@ getEntryImageUrl=function(id) {
 #    entryFiles <- .self$.extractEntriesFromXmlFile(xml.file, extract.dir)
     biodb::logDebug0('Extract entries from XML file "', xml.file,
                 '", into "', extract.dir, '".')
-    entryFiles <- extractXmlEntries(xml.file, normalizePath(extract.dir))
+    entryFiles <- extractXmlEntries(normalizePath(xml.file),
+                                    normalizePath(extract.dir))
 
     # Move extracted files into cache
     ctype <- .self$getPropertyValue('entry.content.type')
