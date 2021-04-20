@@ -98,8 +98,7 @@ correctIds=function(ids) {
         biodb::logDebug0("COUNT IDS = ", length(ids))
 
         # Enough results?
-        if ( ! is.null(max.results) && ! is.na(max.results)
-            && length(ids) >= max.results)
+        if (max.results > 0 && length(ids) >= max.results)
             break
 
         # Send progress message
