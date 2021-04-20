@@ -10,8 +10,7 @@ test.searchMultipleWordsInDescription <- function(conn) {
 biodb::testContext("Test search of entries")
 
 # Instantiate Biodb
-biodb <- biodb::createBiodbTestInstance(log='test_200_entries_retrieval.log',
-                                        ack=TRUE)
+biodb <- biodb::createBiodbTestInstance(ack=TRUE)
 
 # Load package definitions
 defFile <- system.file("definitions.yml", package='biodbHmdb')
