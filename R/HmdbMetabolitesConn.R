@@ -62,21 +62,18 @@ correctIds=function(ids) {
     # Overrides super class' method.
 
     ids <- character()
-    .self$getBiodb()$debug("fields NAMES = ",
-                           paste(names(fields), collapse=", "))
-    .self$getBiodb()$debug("fields VALUES = ",
-                           paste(unname(fields), collapse=", "))
-    .self$getBiodb()$debug("fields VALUES = ",
-                           paste(unname(fields), collapse=", "))
+    biodb::logDebug0("fields NAMES = ", paste(names(fields), collapse=", "))
+    biodb::logDebug0("fields VALUES = ", paste(unname(fields), collapse=", "))
+    biodb::logDebug0("fields VALUES = ", paste(unname(fields), collapse=", "))
 
     # Loop on all entries
-    i <- 0
     allIds <- .self$getEntryIds()
-        .self$getBiodb()$debug("ALL IDS = ", paste(allIds[1:10], collapse=", "))
-        .self$getBiodb()$debug("COUNT ALL IDS = ", length(allIds))
+    biodb::logDebug0("ALL IDS = ", paste(allIds[1:10], collapse=", "))
+    biodb::logDebug0("COUNT ALL IDS = ", length(allIds))
+    prg <- biodb::Progress$new(biodb=.self$getBiodb(),
+                               msg='Searching for entries.',
+                               total=length(allIds))
     for (id in allIds) {
-
-        .self$getBiodb()$debug("I = ", i)
 
         # Get entry
         entry <- .self$getEntry(id)
@@ -95,21 +92,17 @@ correctIds=function(ids) {
             return(m)
         }
         matched <- all(vapply(names(fields), tryMatch, FUN.VALUE=TRUE))
-        .self$getBiodb()$debug("MATCHED = ", matched)
+        biodb::logDebug0("MATCHED = ", matched)
         if (matched)
             ids <- c(ids, id)
-        .self$getBiodb()$debug("COUNT IDS = ", length(ids))
+        biodb::logDebug0("COUNT IDS = ", length(ids))
 
         # Enough results?
-        if ( ! is.null(max.results) && ! is.na(max.results)
-            && length(ids) >= max.results)
+        if (max.results > 0 && length(ids) >= max.results)
             break
 
         # Send progress message
-        i <- i + 1
-        msg <- 'Searching for entries.'
-        .self$getBiodb()$.sendProgress(msg=msg, index=i, total=length(allIds),
-                                       first=(i == 1), found=length(ids))
+        prg$increment()
     }
 
     return(ids)
@@ -149,33 +142,34 @@ getEntryImageUrl=function(id) {
 
 .doDownload=function() {
 
-    .self$message('info', "Downloading HMDB metabolite database...")
+    biodb::logInfo("Downloading HMDB metabolite database...")
     u <- c(.self$getPropValSlot('urls', 'base.url'), 'system', 'downloads',
            'current', 'hmdb_metabolites.zip')
     zip.url <- BiodbUrl(url=u)
-    .self$info("Downloading \"", zip.url$toString(), "\"...")
+    biodb::logInfo0("Downloading \"", zip.url$toString(), "\"...")
     sched <- .self$getBiodb()$getRequestScheduler()
     sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
 },
 
 .doExtractDownload=function() {
 
-    .self$info("Extracting content of downloaded HMDB metabolite database...")
+    biodb::logInfo0("Extracting content of downloaded',
+                    ' HMDB metabolite database...")
     cch <- .self$getBiodb()$getPersistentCache()
 
     # Expand zip
     extract.dir <- cch$getTmpFolderPath()
     zip.path <- .self$getDownloadPath()
-    .self$debug(paste("Unzipping ", zip.path, "...", sep=''))
+    biodb::logDebug0("Unzipping ", zip.path, "...")
     utils::unzip(zip.path, exdir=extract.dir)
-    .self$debug(paste("Unzipped ", zip.path, ".", sep=''))
+    biodb::logDebug0("Unzipped ", zip.path, ".")
 
     # Search for extracted XML file
     files <- list.files(path=extract.dir)
     xml.file <- NULL
     if (length(files) == 0)
-        .self$error("No XML file found in zip file \"", .self$getDownloadPath(),
-                    "\".")
+        biodb::error0("No XML file found in zip file \"",
+                      .self$getDownloadPath(), "\".")
     else if (length(files) == 1)
         xml.file <- file.path(extract.dir, files)
     else {
@@ -183,24 +177,25 @@ getEntryImageUrl=function(id) {
             if (f %in% files)
                 xml.file <- file.path(extract.dir, f)
         if (is.null(xml.file))
-            .self$error("More than one file found in zip file \"",
+            biodb::error0("More than one file found in zip file \"",
                         .self$getDownloadPath(), "\":",
                         paste(files, collapse=", "), ".")
     }
     if (is.null(xml.file))
-        .self$error("No XML file found in ZIP file.")
-    .self$debug("Found XML file ", xml.file, " in ZIP file.")
+        biodb::error("No XML file found in ZIP file.")
+    biodb::logDebug0("Found XML file ", xml.file, " in ZIP file.")
 
     # Delete existing cache files
-    .self$debug('Delete existing entry files in cache system.')
+    biodb::logDebug('Delete existing entry files in cache system.')
     cch$deleteFiles(.self$getCacheId(),
                     ext=.self$getPropertyValue('entry.content.type'))
 
     # Extract entries
 #    entryFiles <- .self$.extractEntriesFromXmlFile(xml.file, extract.dir)
-    .self$debug('Extract entries from XML file "', xml.file,
+    biodb::logDebug0('Extract entries from XML file "', xml.file,
                 '", into "', extract.dir, '".')
-    entryFiles <- extractXmlEntries(xml.file, extract.dir)
+    entryFiles <- extractXmlEntries(normalizePath(xml.file),
+                                    normalizePath(extract.dir))
 
     # Move extracted files into cache
     ctype <- .self$getPropertyValue('entry.content.type')
@@ -208,7 +203,7 @@ getEntryImageUrl=function(id) {
                            ext=ctype)
 
     # Remove extracted XML database file
-    .self$debug('Delete extracted database.')
+    biodb::logDebug('Delete extracted database.')
     unlink(xml.file)
 },
 
@@ -220,15 +215,15 @@ getEntryImageUrl=function(id) {
     # Download
     .self$download()
 
-    .self$getBiodb()$debug(".doGetEntryIds 10")
+    biodb::logDebug(".doGetEntryIds 10")
     if (.self$isDownloaded()) {
 
-    .self$getBiodb()$debug(".doGetEntryIds 11")
+        biodb::logDebug(".doGetEntryIds 11")
         # Get IDs from cache
         ctype <- .self$getPropertyValue('entry.content.type')
         ids <- cch$listFiles(.self$getCacheId(),
                              ext=ctype, extract.name=TRUE)
-    .self$getBiodb()$debug("COUNT IDS = ", length(ids))
+        biodb::logDebug0("COUNT IDS = ", length(ids))
 
         # Filter out wrong IDs
         ids <- ids[grepl("^HMDB[0-9]+$", ids, perl=TRUE)]
