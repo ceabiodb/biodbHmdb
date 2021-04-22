@@ -113,7 +113,7 @@ getEntryPageUrl=function(id) {
 
     fct <- function(x) {
         u <- c(.self$getPropValSlot('urls', 'base.url'), 'metabolites', x)
-        BiodbUrl(url=u)$toString()
+        BiodbUrl$new(url=u)$toString()
     }
 
     return(vapply(id, fct, FUN.VALUE=''))
@@ -125,7 +125,7 @@ getEntryImageUrl=function(id) {
     fct <- function(x) {
         u <- c(.self$getPropValSlot('urls', 'base.url'), 'structures', x,
                'image.png')
-        BiodbUrl(url=u)$toString()
+        BiodbUrl$new(url=u)$toString()
     }
 
     return(vapply(id, fct, FUN.VALUE=''))
@@ -135,7 +135,7 @@ getEntryImageUrl=function(id) {
 
     u <- c(.self$getPropValSlot('urls', 'base.url'), 'metabolites',
            paste(id, 'xml', sep='.'))
-    url <- BiodbUrl(url=u)$toString()
+    url <- BiodbUrl$new(url=u)$toString()
 
     return(url)
 },
@@ -145,7 +145,7 @@ getEntryImageUrl=function(id) {
     biodb::logInfo("Downloading HMDB metabolite database...")
     u <- c(.self$getPropValSlot('urls', 'base.url'), 'system', 'downloads',
            'current', 'hmdb_metabolites.zip')
-    zip.url <- BiodbUrl(url=u)
+    zip.url <- BiodbUrl$new(url=u)
     biodb::logInfo0("Downloading \"", zip.url$toString(), "\"...")
     sched <- .self$getBiodb()$getRequestScheduler()
     sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
