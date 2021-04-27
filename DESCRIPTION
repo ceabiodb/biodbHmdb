@@ -23,7 +23,8 @@ Imports:
 	biodb,
 	Rcpp
 LinkingTo:
-	Rcpp
+	Rcpp,
+	testthat
 NeedsCompilation: yes
 RoxygenNote: 7.1.1
 Collate:
