@@ -142,13 +142,19 @@ getEntryImageUrl=function(id) {
 
 .doDownload=function() {
 
-    biodb::logInfo("Downloading HMDB metabolite database...")
-    u <- c(.self$getPropValSlot('urls', 'base.url'), 'system', 'downloads',
-           'current', 'hmdb_metabolites.zip')
-    zip.url <- BiodbUrl$new(url=u)
-    biodb::logInfo0("Downloading \"", zip.url$toString(), "\"...")
-    sched <- .self$getBiodb()$getRequestScheduler()
-    sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
+    u <- .self$getPropValSlot('urls', 'db.zip.url')
+    biodb::logInfo('Downloading HMDB metabolite database at "%s" ...', u)
+    
+    # Real URL
+    if (grepl('^([a-zA-Z]+://)', u)) {
+        zip.url <- BiodbUrl$new(url=u)
+        sched <- .self$getBiodb()$getRequestScheduler()
+        sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
+        
+    # Path to local file
+    } else {
+        file.copy(u, .self$getDownloadPath())
+    }
 },
 
 .doExtractDownload=function() {
