@@ -13,6 +13,7 @@ biodbHmdb_*.tar.gz
 biodbHmdb_*.tgz
 biodbHmdb.Rcheck
 cache
+check.Renviron
 doc
 man
 Meta
