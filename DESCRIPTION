@@ -32,3 +32,4 @@ Collate:
     'HmdbMetabolitesEntry.R'
     RcppExports.R
     'package.R'
+    'catch-routine-registration.R'
