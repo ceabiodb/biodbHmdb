@@ -1,7 +1,7 @@
 test.hmdbmetabolite.nbentries <- function(conn) {
 
     # Check number of entries
-    n <- conn$getNbEntries(count = TRUE)
+    n <- conn$getNbEntries(count=TRUE)
     expect_is(n, 'integer')
     if (conn$isDownloaded())
         expect_gt(n, 0)
@@ -11,13 +11,15 @@ test.hmdbmetabolite.nbentries <- function(conn) {
 
 test.old.accession <- function(conn) {
 
-    entry <- conn$getEntry('HMDB06006')
+    entry <- conn$getEntry('HMDB00002')
     testthat::expect_is(entry, 'HmdbMetabolitesEntry')
-    testthat::expect_equal(entry$getFieldValue('accession'), 'HMDB0006006')
+    testthat::expect_equal(entry$getFieldValue('accession'), 'HMDB0000002')
 }
 
 # Set test context
 biodb::testContext("Test retrieval of entries")
+
+source('zip_builder.R')
 
 # Instantiate Biodb
 biodb <- biodb::createBiodbTestInstance(ack=TRUE)
@@ -28,6 +30,7 @@ biodb$loadDefinitions(defFile)
 
 # Create connector
 conn <- biodb$getFactory()$createConn('hmdb.metabolites')
+conn$setPropValSlot('urls', 'db.zip.url', two_entries_zip_file)
 
 # Run tests
 biodb::testThat("HMDB metabolite returns enough entries.",

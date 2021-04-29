@@ -5,6 +5,7 @@
 ^biodb.*_.*\.tar\.gz$
 ^biodb.*\.check\.cache$
 ^biodb.*\.Rcheck$
+^cache.*$
 ^cache$
 ^check.Renviron$
 ^codecov\.yml$

@@ -53,6 +53,14 @@ Here is the code to instantiate a connector:
 conn <- mybiodb$getFactory()$createConn('hmdb.metabolites')
 ```
 
+For this vignette, we will avoid the downloading of the full HMDB Metabolites
+database, and use instead an extract containing a few entries:
+```{r}
+dbExtract <- system.file("extdata", 'generated', "hmdb_extract.zip",
+                         package="biodbHmdb")
+conn$setPropValSlot('urls', 'db.zip.url', dbExtract)
+```
+
 # Accessing entries
 
 To get the number of entries stored inside the database, run:

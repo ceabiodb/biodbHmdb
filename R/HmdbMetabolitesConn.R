@@ -153,6 +153,13 @@ getEntryImageUrl=function(id) {
         
     # Path to local file
     } else {
+        biodb::logDebug("Copying file from local path %s to %s.", u,
+                        .self$getDownloadPath())
+        if ( ! file.exists(u))
+            biodb::error("Source file %s does not exist.", u)
+        folder <- dirname(.self$getDownloadPath())
+        if ( ! dir.exists(folder))
+            dir.create(folder, recursive=TRUE)
         file.copy(u, .self$getDownloadPath())
     }
 },
@@ -166,12 +173,12 @@ getEntryImageUrl=function(id) {
     # Expand zip
     extract.dir <- cch$getTmpFolderPath()
     zip.path <- .self$getDownloadPath()
-    biodb::logDebug0("Unzipping ", zip.path, "...")
+    biodb::logDebug("Unzipping %s into %s...", zip.path, extract.dir)
     utils::unzip(zip.path, exdir=extract.dir)
-    biodb::logDebug0("Unzipped ", zip.path, ".")
 
     # Search for extracted XML file
     files <- list.files(path=extract.dir)
+    biodb::logDebug("Found files %s into %s.", lst2str(files), zip.path)
     xml.file <- NULL
     if (length(files) == 0)
         biodb::error0("No XML file found in zip file \"",
