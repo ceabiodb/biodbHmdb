@@ -9,7 +9,7 @@
 
 #include <testthat.h>
 #include <Rcpp.h>
-#include "Tag.hpp"
+#include "Tag.h"
 
 context("Test Tag class") {
 

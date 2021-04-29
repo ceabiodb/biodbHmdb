@@ -13,8 +13,9 @@ biodbHmdb_*.tar.gz
 biodbHmdb_*.tgz
 biodbHmdb.Rcheck
 cache
+cache*
+check.Renviron
 doc
-man
 Meta
 src-i386
 src-x64
@@ -25,3 +26,5 @@ tests/testthat/output
 vignettes/*.html
 vignettes/*.md
 vignettes/*.R
+/doc/
+/Meta/

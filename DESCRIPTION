@@ -17,7 +17,8 @@ Suggests:
     testthat (>= 2.0.0),
     knitr,
     rmarkdown,
-    covr
+    covr,
+    lgr
 Imports:
 	methods,
 	biodb,
@@ -32,3 +33,4 @@ Collate:
     'HmdbMetabolitesEntry.R'
     RcppExports.R
     'package.R'
+    'catch-routine-registration.R'

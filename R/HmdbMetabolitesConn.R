@@ -142,13 +142,26 @@ getEntryImageUrl=function(id) {
 
 .doDownload=function() {
 
-    biodb::logInfo("Downloading HMDB metabolite database...")
-    u <- c(.self$getPropValSlot('urls', 'base.url'), 'system', 'downloads',
-           'current', 'hmdb_metabolites.zip')
-    zip.url <- BiodbUrl$new(url=u)
-    biodb::logInfo0("Downloading \"", zip.url$toString(), "\"...")
-    sched <- .self$getBiodb()$getRequestScheduler()
-    sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
+    u <- .self$getPropValSlot('urls', 'db.zip.url')
+    biodb::logInfo('Downloading HMDB metabolite database at "%s" ...', u)
+    
+    # Real URL
+    if (grepl('^([a-zA-Z]+://)', u)) {
+        zip.url <- BiodbUrl$new(url=u)
+        sched <- .self$getBiodb()$getRequestScheduler()
+        sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
+        
+    # Path to local file
+    } else {
+        biodb::logDebug("Copying file from local path %s to %s.", u,
+                        .self$getDownloadPath())
+        if ( ! file.exists(u))
+            biodb::error("Source file %s does not exist.", u)
+        folder <- dirname(.self$getDownloadPath())
+        if ( ! dir.exists(folder))
+            dir.create(folder, recursive=TRUE)
+        file.copy(u, .self$getDownloadPath())
+    }
 },
 
 .doExtractDownload=function() {
@@ -160,12 +173,12 @@ getEntryImageUrl=function(id) {
     # Expand zip
     extract.dir <- cch$getTmpFolderPath()
     zip.path <- .self$getDownloadPath()
-    biodb::logDebug0("Unzipping ", zip.path, "...")
+    biodb::logDebug("Unzipping %s into %s...", zip.path, extract.dir)
     utils::unzip(zip.path, exdir=extract.dir)
-    biodb::logDebug0("Unzipped ", zip.path, ".")
 
     # Search for extracted XML file
     files <- list.files(path=extract.dir)
+    biodb::logDebug("Found files %s into %s.", lst2str(files), zip.path)
     xml.file <- NULL
     if (length(files) == 0)
         biodb::error0("No XML file found in zip file \"",

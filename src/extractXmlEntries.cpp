@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Tag.hpp"
+#include "Tag.h"
 
 // ' Extract entries from HMDB XML database file.
 // '
