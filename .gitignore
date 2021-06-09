@@ -9,6 +9,8 @@
 *.gz
 *.log
 *.Rcheck
+/doc/
+/Meta/
 biodbHmdb_*.tar.gz
 biodbHmdb_*.tgz
 biodbHmdb.Rcheck
@@ -16,15 +18,15 @@ cache
 cache*
 check.Renviron
 doc
+longtests/*/output
 Meta
 src-i386
 src-x64
 src/*.o
 src/*.rds
 src/*.so
+tests/*/output
 tests/testthat/output
 vignettes/*.html
 vignettes/*.md
 vignettes/*.R
-/doc/
-/Meta/

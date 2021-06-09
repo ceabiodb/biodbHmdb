@@ -5,7 +5,7 @@ Authors@R: c(person("Pierrick", "Roger", email = "pierrick.roger@cea.fr", role =
 Description: The biodbHmdb library is an extension of the biodb framework package that provides access to the HMDB Metabolites database. It allows to download the whole HMDB Metabolites database locally, access entries and search for entries by name or description. A future version of this package will also include a search by mass and mass spectra annotation.
 biocViews: Software, Infrastructure, DataImport
 Depends:
-    R (>= 4.0)
+    R (>= 4.1)
 License: AGPL-3
 Encoding: UTF-8
 LazyData: true
