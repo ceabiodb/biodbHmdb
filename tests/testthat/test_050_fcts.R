@@ -1,13 +1,17 @@
-TEST_DIR <- getwd()
-RES_DIR <- file.path(TEST_DIR, 'res')
-XML_EMPTY <- file.path(RES_DIR, 'hmdb_empty.xml')
-XML_SINGLE_ENTRY <- file.path(RES_DIR, 'hmdb_one_entry.xml')
-XML_WITH_HEADER_TAGS <- file.path(RES_DIR, 'hmdb_one_entry_with_header_tags.xml')
-XML_TWO_ENTRIES <- file.path(RES_DIR, 'hmdb_two_entries.xml')
-XML_NO_ID <- file.path(RES_DIR, 'hmdb_single_entry_no_id.xml')
-XML_WRONG_ID_TAG <- file.path(RES_DIR, 'hmdb_single_entry_wrong_id_tag.xml')
-XML_WRONG_ENTRY_TAG <- file.path(RES_DIR, 'hmdb_single_entry_wrong_entry_tag.xml')
-DST_DIR <- file.path(TEST_DIR, 'output', 'extract_dir')
+XML_EMPTY <- system.file('testref', 'hmdb_empty.xml', package='biodbHmdb')
+XML_SINGLE_ENTRY <- system.file('testref', 'hmdb_one_entry.xml',
+    package='biodbHmdb')
+XML_WITH_HEADER_TAGS <- system.file('testref',
+    'hmdb_one_entry_with_header_tags.xml', package='biodbHmdb')
+XML_TWO_ENTRIES <- system.file('testref', 'hmdb_two_entries.xml',
+    package='biodbHmdb')
+XML_NO_ID <- system.file('testref', 'hmdb_single_entry_no_id.xml',
+    package='biodbHmdb')
+XML_WRONG_ID_TAG <- system.file('testref',
+    'hmdb_single_entry_wrong_id_tag.xml', package='biodbHmdb')
+XML_WRONG_ENTRY_TAG <- system.file('testref',
+    'hmdb_single_entry_wrong_entry_tag.xml', package='biodbHmdb')
+DST_DIR <- file.path(getwd(), 'output', 'extract_dir')
 
 test_extractXmlEntries <- function() {
 
@@ -16,7 +20,8 @@ test_extractXmlEntries <- function() {
     testthat::expect_error(extractXmlEntries("some_non_existing_file", ""))
 
     # Test bad output dir
-    testthat::expect_error(extractXmlEntries(XML_SINGLE_ENTRY, "some_non_existing_dir"))
+    testthat::expect_error(extractXmlEntries(XML_SINGLE_ENTRY,
+        "some_non_existing_dir"))
 
     # Test empty XML file
     unlink(DST_DIR, recursive=TRUE)
