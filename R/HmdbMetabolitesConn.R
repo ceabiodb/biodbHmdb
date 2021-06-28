@@ -20,23 +20,19 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @import methods
-#' @export HmdbMetabolitesConn
-#' @exportClass HmdbMetabolitesConn
-HmdbMetabolitesConn <- methods::setRefClass("HmdbMetabolitesConn",
-    contains=c("BiodbRemotedbConn", "BiodbCompounddbConn", 'BiodbDownloadable'),
-    fields=list(
-        .ns="character"
-        ),
+#' @import R6
+#' @export
+HmdbMetabolitesConn <- R6::R6Class("HmdbMetabolitesConn",
+inherit=biodb::BiodbConn,
 
-methods=list(
+public=list(
 
 getNbEntries=function(count=FALSE) {
     # Overrides super class' method.
 
     n <- NA_integer_
 
-    ids <- .self$getEntryIds()
+    ids <- self$getEntryIds()
     if ( ! is.null(ids))
         n <- length(ids)
 
@@ -58,7 +54,34 @@ correctIds=function(ids) {
     return(ids)
 },
 
-.doSearchForEntries=function(fields=NULL, max.results=0) {
+getEntryPageUrl=function(id) {
+    # Overrides super class' method.
+
+    fct <- function(x) {
+        u <- c(self$getPropValSlot('urls', 'base.url'), 'metabolites', x)
+        BiodbUrl$new(url=u)$toString()
+    }
+
+    return(vapply(id, fct, FUN.VALUE=''))
+},
+
+getEntryImageUrl=function(id) {
+    # Overrides super class' method.
+
+    fct <- function(x) {
+        u <- c(self$getPropValSlot('urls', 'base.url'), 'structures', x,
+               'image.png')
+        BiodbUrl$new(url=u)$toString()
+    }
+
+    return(vapply(id, fct, FUN.VALUE=''))
+}
+),
+
+private=list(
+    ns=NULL
+,
+doSearchForEntries=function(fields=NULL, max.results=0) {
     # Overrides super class' method.
 
     ids <- character()
@@ -67,16 +90,16 @@ correctIds=function(ids) {
     biodb::logDebug0("fields VALUES = ", paste(unname(fields), collapse=", "))
 
     # Loop on all entries
-    allIds <- .self$getEntryIds()
+    allIds <- self$getEntryIds()
     biodb::logDebug0("ALL IDS = ", paste(allIds[1:10], collapse=", "))
     biodb::logDebug0("COUNT ALL IDS = ", length(allIds))
-    prg <- biodb::Progress$new(biodb=.self$getBiodb(),
+    prg <- biodb::Progress$new(biodb=self$getBiodb(),
                                msg='Searching for entries.',
                                total=length(allIds))
     for (id in allIds) {
 
         # Get entry
-        entry <- .self$getEntry(id)
+        entry <- self$getEntry(id)
 
         # Try to match entry
         tryMatch <- function(f) {
@@ -108,71 +131,48 @@ correctIds=function(ids) {
     return(ids)
 },
 
-getEntryPageUrl=function(id) {
-    # Overrides super class' method.
+doGetEntryContentRequest=function(id, concatenate=TRUE) {
 
-    fct <- function(x) {
-        u <- c(.self$getPropValSlot('urls', 'base.url'), 'metabolites', x)
-        BiodbUrl$new(url=u)$toString()
-    }
-
-    return(vapply(id, fct, FUN.VALUE=''))
-},
-
-getEntryImageUrl=function(id) {
-    # Overrides super class' method.
-
-    fct <- function(x) {
-        u <- c(.self$getPropValSlot('urls', 'base.url'), 'structures', x,
-               'image.png')
-        BiodbUrl$new(url=u)$toString()
-    }
-
-    return(vapply(id, fct, FUN.VALUE=''))
-},
-
-.doGetEntryContentRequest=function(id, concatenate=TRUE) {
-
-    u <- c(.self$getPropValSlot('urls', 'base.url'), 'metabolites',
+    u <- c(self$getPropValSlot('urls', 'base.url'), 'metabolites',
            paste(id, 'xml', sep='.'))
     url <- BiodbUrl$new(url=u)$toString()
 
     return(url)
 },
 
-.doDownload=function() {
+doDownload=function() {
 
-    u <- .self$getPropValSlot('urls', 'db.zip.url')
+    u <- self$getPropValSlot('urls', 'db.zip.url')
     biodb::logInfo('Downloading HMDB metabolite database at "%s" ...', u)
+    cch <- self$getBiodb()$getPersistentCache()
     
     # Real URL
     if (grepl('^([a-zA-Z]+://)', u)) {
+        ext <- self$getPropertyValue('dwnld.ext')
+        tmpFile <- tempfile("hmdb.metabolites", tmpdir=cch$getTmpFolderPath(),
+            fileext=ext)
         zip.url <- BiodbUrl$new(url=u)
-        sched <- .self$getBiodb()$getRequestScheduler()
-        sched$downloadFile(url=zip.url, dest.file=.self$getDownloadPath())
+        sched <- self$getBiodb()$getRequestScheduler()
+        sched$downloadFile(url=zip.url, dest.file=tmpFile)
+        self$setDownloadedFile(tmpFile, action='move')
         
     # Path to local file
     } else {
-        biodb::logDebug("Copying file from local path %s to %s.", u,
-                        .self$getDownloadPath())
         if ( ! file.exists(u))
             biodb::error("Source file %s does not exist.", u)
-        folder <- dirname(.self$getDownloadPath())
-        if ( ! dir.exists(folder))
-            dir.create(folder, recursive=TRUE)
-        file.copy(u, .self$getDownloadPath())
+        self$setDownloadedFile(u, action='copy')
     }
 },
 
-.doExtractDownload=function() {
+doExtractDownload=function() {
 
     biodb::logInfo0("Extracting content of downloaded',
                     ' HMDB metabolite database...")
-    cch <- .self$getBiodb()$getPersistentCache()
+    cch <- self$getBiodb()$getPersistentCache()
 
     # Expand zip
     extract.dir <- cch$getTmpFolderPath()
-    zip.path <- .self$getDownloadPath()
+    zip.path <- self$getDownloadPath()
     biodb::logDebug("Unzipping %s into %s...", zip.path, extract.dir)
     utils::unzip(zip.path, exdir=extract.dir)
 
@@ -182,7 +182,7 @@ getEntryImageUrl=function(id) {
     xml.file <- NULL
     if (length(files) == 0)
         biodb::error0("No XML file found in zip file \"",
-                      .self$getDownloadPath(), "\".")
+                      self$getDownloadPath(), "\".")
     else if (length(files) == 1)
         xml.file <- file.path(extract.dir, files)
     else {
@@ -191,7 +191,7 @@ getEntryImageUrl=function(id) {
                 xml.file <- file.path(extract.dir, f)
         if (is.null(xml.file))
             biodb::error0("More than one file found in zip file \"",
-                        .self$getDownloadPath(), "\":",
+                        self$getDownloadPath(), "\":",
                         paste(files, collapse=", "), ".")
     }
     if (is.null(xml.file))
@@ -200,19 +200,19 @@ getEntryImageUrl=function(id) {
 
     # Delete existing cache files
     biodb::logDebug('Delete existing entry files in cache system.')
-    cch$deleteFiles(.self$getCacheId(),
-                    ext=.self$getPropertyValue('entry.content.type'))
+    cch$deleteFiles(self$getCacheId(),
+                    ext=self$getPropertyValue('entry.content.type'))
 
     # Extract entries
-#    entryFiles <- .self$.extractEntriesFromXmlFile(xml.file, extract.dir)
+#    entryFiles <- private$extractEntriesFromXmlFile(xml.file, extract.dir)
     biodb::logDebug0('Extract entries from XML file "', xml.file,
                 '", into "', extract.dir, '".')
     entryFiles <- extractXmlEntries(normalizePath(xml.file),
                                     normalizePath(extract.dir))
 
     # Move extracted files into cache
-    ctype <- .self$getPropertyValue('entry.content.type')
-    cch$moveFilesIntoCache(unname(entryFiles), cache.id=.self$getCacheId(), name=names(entryFiles),
+    ctype <- self$getPropertyValue('entry.content.type')
+    cch$moveFilesIntoCache(unname(entryFiles), cache.id=self$getCacheId(), name=names(entryFiles),
                            ext=ctype)
 
     # Remove extracted XML database file
@@ -220,21 +220,21 @@ getEntryImageUrl=function(id) {
     unlink(xml.file)
 },
 
-.doGetEntryIds=function(max.results=NA_integer_) {
+doGetEntryIds=function(max.results=NA_integer_) {
 
     ids <- NULL
-    cch <- .self$getBiodb()$getPersistentCache()
+    cch <- self$getBiodb()$getPersistentCache()
 
     # Download
-    .self$download()
+    self$download()
 
     biodb::logDebug(".doGetEntryIds 10")
-    if (.self$isDownloaded()) {
+    if (self$isDownloaded()) {
 
         biodb::logDebug(".doGetEntryIds 11")
         # Get IDs from cache
-        ctype <- .self$getPropertyValue('entry.content.type')
-        ids <- cch$listFiles(.self$getCacheId(),
+        ctype <- self$getPropertyValue('entry.content.type')
+        ids <- cch$listFiles(self$getCacheId(),
                              ext=ctype, extract.name=TRUE)
         biodb::logDebug0("COUNT IDS = ", length(ids))
 
@@ -244,5 +244,4 @@ getEntryImageUrl=function(id) {
 
     return(ids)
 }
-
 ))

@@ -3,6 +3,9 @@
 databases:
 
   hmdb.metabolites:
+    remote: true
+    compound.db: true
+    downloadable: true
     entry.content.type: xml
     name: HMDB Metabolites
     parsing.expr:

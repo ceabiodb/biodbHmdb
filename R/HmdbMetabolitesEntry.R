@@ -17,42 +17,43 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @import methods
-#' @export HmdbMetabolitesEntry
-#' @exportClass HmdbMetabolitesEntry
-HmdbMetabolitesEntry <- methods::setRefClass("HmdbMetabolitesEntry",
-    contains="BiodbXmlEntry",
+#' @import R6
+#' @export
+HmdbMetabolitesEntry <- R6::R6Class("HmdbMetabolitesEntry",
+inherit=biodb::BiodbXmlEntry,
 
-methods=list(
+public=list(
 
 initialize=function(...) {
+    super$initialize(...)
+}
+),
 
-    callSuper(...)
-},
-
-.isParsedContentCorrect=function(parsed.content) {
+private=list(
+isParsedContentCorrect=function(parsed.content) {
     return(length(XML::getNodeSet(parsed.content, "//error")) == 0)
 },
 
-.parseFieldsStep2=function(parsed.content) {
+parseFieldsStep2=function(parsed.content) {
 
     # Remove fields with empty string
-    for (f in .self$getFieldNames()) {
-        v <- .self$getFieldValue(f)
+    for (f in self$getFieldNames()) {
+        v <- self$getFieldValue(f)
         if (is.character(v) && ! is.na(v) && v == '')
-            .self$removeField(f)
+            self$removeField(f)
     }
 
     # Correct InChIKey
-    if (.self$hasField('INCHIKEY')) {
-        v <- sub('^InChIKey=', '', .self$getFieldValue('INCHIKEY'), perl=TRUE)
-        .self$setFieldValue('INCHIKEY', v)
+    if (self$hasField('INCHIKEY')) {
+        v <- sub('^InChIKey=', '', self$getFieldValue('INCHIKEY'), perl=TRUE)
+        self$setFieldValue('INCHIKEY', v)
     }
 
     # Synonyms
     synonyms <- XML::xpathSApply(parsed.content, "//synonym", XML::xmlValue)
     if (length(synonyms) > 0)
-        .self$appendFieldValue('name', synonyms)
-}
+        self$appendFieldValue('name', synonyms)
 
+    return(invisible(NULL))
+}
 ))

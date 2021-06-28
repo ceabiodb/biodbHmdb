@@ -20,7 +20,7 @@ Suggests:
     covr,
     lgr
 Imports:
-	methods,
+	R6,
 	biodb,
 	Rcpp
 LinkingTo:
