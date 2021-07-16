@@ -31,17 +31,12 @@ mybiodb$terminate()
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-getNbEntries}{\code{HmdbMetabolitesConn$getNbEntries()}}
-\item \href{#method-correctIds}{\code{HmdbMetabolitesConn$correctIds()}}
-\item \href{#method-getEntryPageUrl}{\code{HmdbMetabolitesConn$getEntryPageUrl()}}
-\item \href{#method-getEntryImageUrl}{\code{HmdbMetabolitesConn$getEntryImageUrl()}}
 \item \href{#method-clone}{\code{HmdbMetabolitesConn$clone()}}
 }
 }
 \if{html}{
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConnBase" data-id="defineParsingExpressions">}\href{../../biodb/html/BiodbConnBase.html#method-defineParsingExpressions}{\code{biodb::BiodbConnBase$defineParsingExpressions()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConnBase" data-id="getBaseUrl">}\href{../../biodb/html/BiodbConnBase.html#method-getBaseUrl}{\code{biodb::BiodbConnBase$getBaseUrl()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConnBase" data-id="getConnClass">}\href{../../biodb/html/BiodbConnBase.html#method-getConnClass}{\code{biodb::BiodbConnBase$getConnClass()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConnBase" data-id="getConnClassName">}\href{../../biodb/html/BiodbConnBase.html#method-getConnClassName}{\code{biodb::BiodbConnBase$getConnClassName()}}\out{</span>}
@@ -81,6 +76,7 @@ mybiodb$terminate()
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="annotateMzValues">}\href{../../biodb/html/BiodbConn.html#method-annotateMzValues}{\code{biodb::BiodbConn$annotateMzValues()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="checkDb">}\href{../../biodb/html/BiodbConn.html#method-checkDb}{\code{biodb::BiodbConn$checkDb()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="collapseResultsDataFrame">}\href{../../biodb/html/BiodbConn.html#method-collapseResultsDataFrame}{\code{biodb::BiodbConn$collapseResultsDataFrame()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="correctIds">}\href{../../biodb/html/BiodbConn.html#method-correctIds}{\code{biodb::BiodbConn$correctIds()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="deleteAllCacheEntries">}\href{../../biodb/html/BiodbConn.html#method-deleteAllCacheEntries}{\code{biodb::BiodbConn$deleteAllCacheEntries()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="deleteAllEntriesFromPersistentCache">}\href{../../biodb/html/BiodbConn.html#method-deleteAllEntriesFromPersistentCache}{\code{biodb::BiodbConn$deleteAllEntriesFromPersistentCache()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="deleteAllEntriesFromVolatileCache">}\href{../../biodb/html/BiodbConn.html#method-deleteAllEntriesFromVolatileCache}{\code{biodb::BiodbConn$deleteAllEntriesFromVolatileCache()}}\out{</span>}
@@ -102,9 +98,12 @@ mybiodb$terminate()
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getEntryContentFromDb">}\href{../../biodb/html/BiodbConn.html#method-getEntryContentFromDb}{\code{biodb::BiodbConn$getEntryContentFromDb()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getEntryContentRequest">}\href{../../biodb/html/BiodbConn.html#method-getEntryContentRequest}{\code{biodb::BiodbConn$getEntryContentRequest()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getEntryIds">}\href{../../biodb/html/BiodbConn.html#method-getEntryIds}{\code{biodb::BiodbConn$getEntryIds()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getEntryImageUrl">}\href{../../biodb/html/BiodbConn.html#method-getEntryImageUrl}{\code{biodb::BiodbConn$getEntryImageUrl()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getEntryPageUrl">}\href{../../biodb/html/BiodbConn.html#method-getEntryPageUrl}{\code{biodb::BiodbConn$getEntryPageUrl()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getId">}\href{../../biodb/html/BiodbConn.html#method-getId}{\code{biodb::BiodbConn$getId()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getMatchingMzField">}\href{../../biodb/html/BiodbConn.html#method-getMatchingMzField}{\code{biodb::BiodbConn$getMatchingMzField()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getMzValues">}\href{../../biodb/html/BiodbConn.html#method-getMzValues}{\code{biodb::BiodbConn$getMzValues()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getNbEntries">}\href{../../biodb/html/BiodbConn.html#method-getNbEntries}{\code{biodb::BiodbConn$getNbEntries()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getNbPeaks">}\href{../../biodb/html/BiodbConn.html#method-getNbPeaks}{\code{biodb::BiodbConn$getNbPeaks()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="getSearchableFields">}\href{../../biodb/html/BiodbConn.html#method-getSearchableFields}{\code{biodb::BiodbConn$getSearchableFields()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="initialize">}\href{../../biodb/html/BiodbConn.html#method-initialize}{\code{biodb::BiodbConn$initialize()}}\out{</span>}
@@ -138,42 +137,6 @@ mybiodb$terminate()
 \item \out{<span class="pkg-link" data-pkg="biodb" data-topic="BiodbConn" data-id="writingIsAllowed">}\href{../../biodb/html/BiodbConn.html#method-writingIsAllowed}{\code{biodb::BiodbConn$writingIsAllowed()}}\out{</span>}
 }
 \out{</details>}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getNbEntries"></a>}}
-\if{latex}{\out{\hypertarget{method-getNbEntries}{}}}
-\subsection{Method \code{getNbEntries()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HmdbMetabolitesConn$getNbEntries(count = FALSE)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-correctIds"></a>}}
-\if{latex}{\out{\hypertarget{method-correctIds}{}}}
-\subsection{Method \code{correctIds()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HmdbMetabolitesConn$correctIds(ids)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getEntryPageUrl"></a>}}
-\if{latex}{\out{\hypertarget{method-getEntryPageUrl}{}}}
-\subsection{Method \code{getEntryPageUrl()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HmdbMetabolitesConn$getEntryPageUrl(id)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getEntryImageUrl"></a>}}
-\if{latex}{\out{\hypertarget{method-getEntryImageUrl}{}}}
-\subsection{Method \code{getEntryImageUrl()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HmdbMetabolitesConn$getEntryImageUrl(id)}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
