@@ -4,6 +4,11 @@
 \alias{HmdbMetabolitesEntry}
 \title{HMDB Metabolites entry class.}
 \description{
+HMDB Metabolites entry class.
+
+HMDB Metabolites entry class.
+}
+\details{
 This is the entry class for the HMDB Metabolites database.
 }
 \examples{
@@ -69,10 +74,22 @@ mybiodb$terminate()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+New instance initializer. Connector classes must not be instantiated
+directly. Instead, you must use the createConn() method of the factory class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{HmdbMetabolitesEntry$new(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{All parameters are passed to the super class initializer.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Nothing.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

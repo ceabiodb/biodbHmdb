@@ -82,7 +82,7 @@ entries
 
 To convert a list of entries into a dataframe, run:
 ```{r}
-x <- mybiodb$entriesToDataframe(entries)
+x <- mybiodb$entriesToDataframe(entries, compute=FALSE)
 x
 ```
 

@@ -24,17 +24,23 @@ inherit=biodb::BiodbXmlEntry,
 
 public=list(
 
+#' @description
+#' New instance initializer. Connector classes must not be instantiated
+#' directly. Instead, you must use the createConn() method of the factory class.
+#' @param ... All parameters are passed to the super class initializer.
+#' @return Nothing.
 initialize=function(...) {
     super$initialize(...)
 }
 ),
 
 private=list(
-isParsedContentCorrect=function(parsed.content) {
-    return(length(XML::getNodeSet(parsed.content, "//error")) == 0)
-},
 
-parseFieldsStep2=function(parsed.content) {
+doCheckParsedContent=function(parsed.content) {
+    return(length(XML::getNodeSet(parsed.content, "//error")) == 0)
+}
+
+,doParseFieldsStep2=function(parsed.content) {
 
     # Remove fields with empty string
     for (f in self$getFieldNames()) {
