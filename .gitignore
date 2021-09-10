@@ -28,6 +28,7 @@ src/*.rds
 src/*.so
 tests/*/output
 tests/testthat/output
+testthat-problems.rds
 vignettes/*.html
 vignettes/*.md
 vignettes/*.R

@@ -4,6 +4,11 @@ biodb::testContext("Generic long tests")
 # Instantiate Biodb
 biodb <- biodb::createBiodbTestInstance(ack=TRUE)
 
+# Use custom cache system because BiocFileCache is too
+# slow for importing the 100,000+ entry files of HMDB
+# Metabolites.
+biodb$getConfig()$set('persistent.cache.impl', 'custom')
+
 # Load package definitions
 defFile <- system.file("definitions.yml", package='biodbHmdb')
 biodb$loadDefinitions(defFile)
@@ -33,7 +38,7 @@ conn <- biodb$getFactory()$createConn('hmdb.metabolites')
 #
 # IMPORTANT Once you are done with the JSON files, uncomment the following line
 # in order to enable generic tests to run:
-#biodb::runGenericTests(conn, short=FALSE, long=TRUE, list(max.results=1))
+biodb::runGenericTests(conn, short=FALSE, long=TRUE, list(max.results=1))
 
 # Terminate Biodb
 biodb$terminate()

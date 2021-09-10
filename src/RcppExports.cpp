@@ -10,6 +10,18 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// convolve_cpp
+Rcpp::NumericVector convolve_cpp(const Rcpp::NumericVector& a, const Rcpp::NumericVector& b);
+RcppExport SEXP _biodbHmdb_convolve_cpp(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(convolve_cpp(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
 // extractXmlEntries
 Rcpp::StringVector extractXmlEntries(const std::string& xmlFile, const std::string& extractDir);
 RcppExport SEXP _biodbHmdb_extractXmlEntries(SEXP xmlFileSEXP, SEXP extractDirSEXP) {
@@ -26,6 +38,7 @@ END_RCPP
 RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_biodbHmdb_convolve_cpp", (DL_FUNC) &_biodbHmdb_convolve_cpp, 2},
     {"_biodbHmdb_extractXmlEntries", (DL_FUNC) &_biodbHmdb_extractXmlEntries, 2},
     {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
     {NULL, NULL, 0}
