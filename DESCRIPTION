@@ -21,13 +21,13 @@ Suggests:
     lgr
 Imports:
 	R6,
-	biodb,
+	biodb (>= 1.1.4),
 	Rcpp
 LinkingTo:
 	Rcpp,
 	testthat
 NeedsCompilation: yes
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Collate:
     'HmdbMetabolitesConn.R'
     'HmdbMetabolitesEntry.R'
