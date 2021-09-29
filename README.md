@@ -1,27 +1,29 @@
 # biodbHmdb
 
-[![Build Status](https://travis-ci.org/pkrog/biodbHmdb.svg?branch=master)](https://travis-ci.org/pkrog/biodbHmdb)
 [![Codecov test coverage](https://codecov.io/gh/pkrog/biodbHmdb/branch/master/graph/badge.svg)](https://codecov.io/gh/pkrog/biodbHmdb?branch=master)
 
-An R package for accessing [HMDB](http://www.hmdb.ca) online database, based on R package/framework [biodb](https://github.com/pkrog/biodb/).
+An R package for accessing [HMDB](http://www.hmdb.ca) online database, based on
+R package/framework [biodb](https://github.com/pkrog/biodb/).
 
 ## Introduction
 
-This extension package to [biodb](https://github.com/pkrog/biodb/) implements a connector to the [HMDB](http://www.hmdb.ca) database.
+This extension package to [biodb](https://github.com/pkrog/biodb/) implements a
+connector to the [HMDB](http://www.hmdb.ca) database.
 
 ## Installation
 
-Install the latest version of this package by running the following commands:
+Install the latest stable version using Bioconductor:
 ```r
-devtools::install_github('pkrog/biodb', dependencies=TRUE)
-devtools::install_github('pkrog/biodbHmdb', dependencies=TRUE)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install('biodbHmdb')
 ```
 
 ## Examples
 
 Searching for entries with multiple words inside the field "description":
 ```r
-mybiodb <- biodb::Biodb()
+mybiodb <- biodb::newInst()
 conn <- mybiodb$getFactory()$createConn('hmdb.metabolites')
 ids <- conn$searchForEntries(fields=list(description=c('milk', 'Oligosaccharide')))
 ```
