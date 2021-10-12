@@ -13,14 +13,14 @@
 #' conn <- mybiodb$getFactory()$createConn('hmdb.metabolites')
 #'
 #' # Get an entry
-#' \dontrun{
+#' \donttest{ # Getting one entry requires the download of the whole database.
 #' e <- conn$getEntry('HMDB0000001')
 #' }
 #'
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @import R6
+#' @importFrom R6 R6Class
 #' @export
 HmdbMetabolitesConn <- R6::R6Class("HmdbMetabolitesConn",
 inherit=biodb::BiodbConn,

@@ -1,5 +1,10 @@
+Changes in version 0.99.2 (2021-10-12)
++ Add ORCID, URL and BugReports.
++ Add session info and install sections in vignette.
++ Corrected indentations in vignette.
+
 Changes in version 0.99.1 (2021-09-29)
 + Slight corrections for Bioconductor submission.
 
-Changes in version 0.99.0 (2021-09-16)
+Changes in version 0.99.0 (2021-07-16)
 + Submitted to Bioconductor

@@ -2,8 +2,8 @@
 
 export(HmdbMetabolitesConn)
 export(HmdbMetabolitesEntry)
-import(R6)
 import(Rcpp)
 import(biodb)
+importFrom(R6,R6Class)
 importFrom(Rcpp,evalCpp)
 useDynLib(biodbHmdb)

@@ -4,20 +4,20 @@ author: "Pierrick Roger"
 date: "`r BiocStyle::doc_date()`"
 package: "`r BiocStyle::pkg_ver('biodbHmdb')`"
 vignette: |
-  %\VignetteIndexEntry{Introduction to the biodbHmdb package.}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{Introduction to the biodbHmdb package.}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 output:
-  BiocStyle::html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float:
-      collapsed: false
-  BiocStyle::pdf_document: default
+    BiocStyle::html_document:
+        toc: yes
+        toc_depth: 4
+        toc_float:
+            collapsed: false
+    BiocStyle::pdf_document: default
 bibliography: references.bib
 ---
 
-# Purpose
+# Introduction
 
 biodbHmdb is a *biodb* extension package that implements a connector to
 HMDB Metabolites.
@@ -28,6 +28,15 @@ entries with this package.
 Note that the whole *HMDB* is downloaded locally by *biodb* and stored on disk,
 since this is the only way to access *HMDB* programmatically.
 Any search on *HMDB* is hence currently run on the local machine.
+
+# Installation
+
+Install using Bioconductor:
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install('biodbHmdb')
+```
 
 # Initialization
 
@@ -57,7 +66,7 @@ For this vignette, we will avoid the downloading of the full HMDB Metabolites
 database, and use instead an extract containing a few entries:
 ```{r}
 dbExtract <- system.file("extdata", 'generated', "hmdb_extract.zip",
-                         package="biodbHmdb")
+    package="biodbHmdb")
 conn$setPropValSlot('urls', 'db.zip.url', dbExtract)
 ```
 
@@ -144,3 +153,11 @@ ensure release of resources (file handles, database connection, etc):
 ```{r}
 mybiodb$terminate()
 ```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
+# References
