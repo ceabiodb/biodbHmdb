@@ -17,7 +17,7 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @import R6
+#' @importFrom R6 R6Class
 #' @export
 HmdbMetabolitesEntry <- R6::R6Class("HmdbMetabolitesEntry",
 inherit=biodb::BiodbXmlEntry,
