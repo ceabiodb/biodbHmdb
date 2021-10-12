@@ -33,7 +33,7 @@ Any search on *HMDB* is hence currently run on the local machine.
 
 Install using Bioconductor:
 ```{r, eval=FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
 BiocManager::install('biodbHmdb')
 ```
