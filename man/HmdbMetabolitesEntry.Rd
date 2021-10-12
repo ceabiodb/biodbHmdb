@@ -19,7 +19,7 @@ mybiodb <- biodb::newInst()
 conn <- mybiodb$getFactory()$createConn('hmdb.metabolites')
 
 # Get an entry
-\dontrun{
+\donttest{ # Getting one entry requires the download of the whole database.
 e <- conn$getEntry('HMDB0000001')
 }
 
