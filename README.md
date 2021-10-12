@@ -30,6 +30,11 @@ ids <- conn$searchForEntries(fields=list(description=c('milk', 'Oligosaccharide'
 
 ## Documentation
 
+See the introduction vignette:
+```r
+vignette('biodbHmdb', package='biodbHmdb')
+```
+
 To get documentation on the implemented connector once inside R, run:
 ```r
 ?biodbHmdb::HmdbMetabolitesConn
