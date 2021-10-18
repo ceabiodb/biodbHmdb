@@ -1,3 +1,6 @@
+Changes in version 0.99.4 (2021-10-18)
++ When reading the zipped database, take the only XML file available, ignoring other files.
+
 Changes in version 0.99.2 (2021-10-12)
 + Add ORCID, URL and BugReports.
 + Add session info and install sections in vignette.

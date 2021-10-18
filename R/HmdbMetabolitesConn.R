@@ -171,6 +171,12 @@ doDownload=function() {
     else if (length(files) == 1)
         xml.file <- file.path(extract.dir, files)
     else {
+        xml <- grep('^.*\\.xml$', files)
+        if (length(xml) == 0)
+            biodb::error0("No XML file found in zip file \"",
+                self$getDownloadPath(), "\".")
+        if (length(xml) == 1)
+            xml.file <- file.path(extract.dir, files[[xml]])
         for (f in c('hmdb_metabolites.xml', 'hmdb_metabolites_tmp.xml'))
             if (f %in% files)
                 xml.file <- file.path(extract.dir, f)
