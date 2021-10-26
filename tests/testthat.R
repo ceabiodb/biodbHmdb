@@ -3,5 +3,6 @@
 # testthat::test_dir documentation.
 library(testthat)
 library(biodbHmdb)
-Sys.setenv(TESTTHAT_REPORTER = "summary")
+Sys.setenv(TESTTHAT_REPORTER="summary")
+Sys.setenv(BIODB_LOG_DST="console")
 test_check("biodbHmdb")
