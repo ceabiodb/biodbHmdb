@@ -21,4 +21,4 @@ if (logDst == 'console') {
 # Log everything
 app$set_threshold('all')
 lgr::lgr$add_appender(app, "biodb.test")
-lgr::lgr$set_threshold(NA)
+lgr::lgr$set_threshold('all')
