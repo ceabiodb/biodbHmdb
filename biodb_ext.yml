@@ -14,6 +14,6 @@ remote: yes
 downloadable: yes
 makefile: yes
 rcpp: yes
-vignetteName: intro
+vignetteName: biodbHmdb
 githubRepos: pkrog/biodbHmdb
 travis: no
