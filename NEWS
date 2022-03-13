@@ -1,3 +1,7 @@
+Changes in version 1.1.2 (2022-03-13)
++ Change vignette name.
++ Update HMDB extract zip file used for vignette and testing.
+
 Changes in version 0.99.4 (2021-10-18)
 + When reading the zipped database, take the only XML file available, ignoring other files.
 
