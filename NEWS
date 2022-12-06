@@ -1,3 +1,6 @@
+Changes in version ????? (2022-12-06)
++ Remove R_front script.
+
 Changes in version 1.1.2 (2022-03-13)
 + Change vignette name.
 + Update HMDB extract zip file used for vignette and testing.
